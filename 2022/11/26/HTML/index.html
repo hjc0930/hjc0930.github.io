@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>
+    HTML笔记 | 博客网站
+  </title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta name="theme-color" content="#4184f3">
+  
+  
+
+  
+<link rel="stylesheet" href="/css/highlight.light.css">
+
+  
+<link rel="stylesheet" href="/css/prism-customize.css">
+
+  
+<link rel="stylesheet" href="/css/nav-icon.css">
+
+  
+<link rel="stylesheet" href="/css/waves.min.css">
+
+  
+<link rel="stylesheet" href="/css/jquery.tocify.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/nav-indicator.css">
+
+  
+<link rel="stylesheet" href="/css/twikoo.css">
+
+  
+<link rel="stylesheet" href="/css/search.css">
+
+  
+  
+
+  
+
+  </meta>
+  </meta>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+  
+<script src="/js/comment.js"></script>
+
+  
+<script src="/js/copy.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+	<body>
+		<header>
+			<!-- cover image or sth. -->
+		</header>
+		<div id="main" class="m-scene">
+			
+<div class="nav-wrapper" id="header">
+
+    <div class="container">
+        <nav>
+            
+            
+            <div class="logo wave">
+                <a href="/" id="logo">
+                    笔记
+                </a>
+            </div>
+
+            
+
+            <div class="nav-toggle-icon" >
+                <div class="material-hamburger">
+                    <span>
+                    </span>
+                    <span>
+                    </span>
+                    <span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="menu-wrapper">
+                <div class="nav-indicator">
+                </div>
+                <ul class="menus">
+                    
+                     
+                        <li>
+                            <a class="wave " href="/">
+                                首页
+                            </a>
+                        </li>
+                     
+                        <li>
+                            <a class="wave " href="/archives">
+                                归档
+                            </a>
+                        </li>
+                     
+                        <li>
+                            <a class="wave " href="/about">
+                                关于
+                            </a>
+                        </li>
+                     
+                        <li>
+                            <a class="wave " href="/message">
+                                留言
+                            </a>
+                        </li>
+                     
+                        <li>
+                            <a class="wave " href="/search">
+                                搜索
+                            </a>
+                        </li>
+                     
+                    
+                   
+                </ul>
+            </div>
+
+        </nav>
+    </div>
+</div>
+
+
+				<div class="container content">
+					<div class="scene_element scene_element--fadein">
+						<div class="row">
+  <div class="main main-article">
+    <article>
+
+      
+        <header class="post-header no-cover">
+      
+        </header>
+
+      <!-- 标题 -->
+      <h1 class="post-title">
+        HTML笔记
+      </h1>
+
+      <section class="post-info post-info-bottom">
+
+        <!-- 发布时间 -->
+        <span class="post-date">
+          <span class="post-date-text">
+            发布于: 2022-11-26
+          </span>
+        </span>
+        
+        <!-- 分类 -->
+        
+
+        <!-- 标签 -->
+        
+
+        <!-- 阅读量统计 -->
+        
+
+      </section>
+
+      <!-- 正文 -->
+      <section class="post-content">
+        <h2 id="1-HTML-XHTML-XML的区别"><a href="#1-HTML-XHTML-XML的区别" class="headerlink" title="1.HTML XHTML XML的区别"></a>1.HTML XHTML XML的区别</h2><ul>
+<li>HTML: 超文本标记语言</li>
+<li>XHTML：可扩展的超文本标记语言，基于XML，作用与HTML类似，但语法更加严格</li>
+<li>XML：可扩展标记语言，主要用于存储数据和结构</li>
+</ul>
+<p>XHTML标签名必须手写，元素必须以双标签形式存在，元素必须被正确嵌套，元素必须有根元素</p>
+<h2 id="2-HTML5和HTML的区别"><a href="#2-HTML5和HTML的区别" class="headerlink" title="2.HTML5和HTML的区别"></a>2.HTML5和HTML的区别</h2><p>HTML5是HTML的新标准，其主要目标是无需任何额外的插件就可以传输所有内容，它包括了动画，视频等丰富的图形界面</p>
+<p><strong>从文档声明</strong></p>
+<p><code>HTML</code>的文档声明是很长的一段代码，而<code>HTML5</code> 只需要在文档头部使用<code>&lt;!DOCTYPE html&gt;</code>标签即可声明</p>
+<p><strong>从语义结构</strong></p>
+<p><code>HTML4.0</code>没有体现语义化的标签，而<code>HTML5</code>加入了很多语义化标签，如<code>header main footer acticle</code>等</p>
+<h2 id="3-DOCTYPE标签"><a href="#3-DOCTYPE标签" class="headerlink" title="3.DOCTYPE标签"></a>3.DOCTYPE标签</h2><p><code>&lt;!DOCTYPE html&gt;</code>的作用就是让浏览器进入标准模式，使用最新的<code>W3C</code>标准来解析渲染页面，若文档头部不写则浏览器会使用兼容模式来解析和渲染页面</p>
+<ul>
+<li>标准模式：指浏览器按照<code>W3C</code>标准解析文档</li>
+<li>兼容模式：浏览器通常会为了兼容老旧站点而不使用最新的<code>W3C</code>标准来解析文档</li>
+</ul>
+<h2 id="4-块元素-行内元素-行内块元素"><a href="#4-块元素-行内元素-行内块元素" class="headerlink" title="4.块元素 行内元素 行内块元素"></a>4.块元素 行内元素 行内块元素</h2><ul>
+<li>块元素<ul>
+<li>独占一行</li>
+<li>可以设置宽高，不设置宽度情况下默认继承父元素的宽度</li>
+<li>常见的块元素：<code>div p h1~h6 ul ol table form</code></li>
+</ul>
+</li>
+<li>行内元素<ul>
+<li>相邻的元素会排列在同一行</li>
+<li>无法设置宽高，其大小由内容决定</li>
+<li>可以设置水平方向的<code>margin padding</code>的值，但无法使用<code>auto</code>属性居中</li>
+<li>常见的行内元素：<code>span a strong b em i label</code>等</li>
+</ul>
+</li>
+<li>行内块元素<ul>
+<li>不独占一行</li>
+<li>可以设置宽高，默认大小由内容决定</li>
+<li>可以设置<code>margin padding</code>等属性，但无法使用<code>auto</code>属性居中</li>
+<li>常见的行内块元素：<code>button input img iframe</code>等</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-Link和-import导入样式的区别"><a href="#5-Link和-import导入样式的区别" class="headerlink" title="5.Link和@import导入样式的区别"></a>5.Link和@import导入样式的区别</h2><ul>
+<li>link是HTML标签，@import用于CSS文件中导入另一个CSS文件</li>
+<li>link标签在页面加载时就会被加载，@import引用会等到页面加载完在加载</li>
+<li>link标签权重高于@import引用</li>
+<li>@import引用有兼容性问题，而link标签无兼容问题</li>
+</ul>
+<h2 id="6-label标签"><a href="#6-label标签" class="headerlink" title="6.label标签"></a>6.label标签</h2><p><code>label</code>标签用来定义表单控制间的关系，当用户与该标签发生交互的时候，浏览器会自动对焦到绑定的表单标签上</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;Name&quot;</span>&gt;</span>Number:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">“text“</span> <span class="attr">name</span>=<span class="string">&quot;Name&quot;</span> <span class="attr">id</span>=<span class="string">&quot;Name&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="7-标签上的title和alt属性的区别"><a href="#7-标签上的title和alt属性的区别" class="headerlink" title="7.标签上的title和alt属性的区别"></a>7.标签上的title和alt属性的区别</h2><p>title属性用于为该元素设置建议性信息，在鼠标移到该元素上面时会显示</p>
+<p>alt属性用于在图片未能正常显示时给予文字说明</p>
+<h2 id="8-语义化的好处"><a href="#8-语义化的好处" class="headerlink" title="8.语义化的好处"></a>8.语义化的好处</h2><ul>
+<li>便于开发者阅读和写出更加优雅的代码</li>
+<li>有利于<code>SEO</code>：让浏览器爬虫更好地解析，爬虫依赖于标签来确定上下文和各个关键字的权重</li>
+<li>方便其它设备(如移动设备)解析文档</li>
+</ul>
+<h2 id="9-iframe的优缺点"><a href="#9-iframe的优缺点" class="headerlink" title="9.iframe的优缺点"></a>9.iframe的优缺点</h2><ul>
+<li>优点<ul>
+<li>跨域通信</li>
+<li>无刷新文件上传</li>
+<li>可以用于加载一些第三方图标或广告等</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>会阻塞主页面<code>onload</code>事件</li>
+<li>无法被一些搜索引擎识别</li>
+<li>会产生很多页面，不利于管理</li>
+</ul>
+</li>
+</ul>
+<h2 id="10-src与href的区别"><a href="#10-src与href的区别" class="headerlink" title="10.src与href的区别"></a>10.src与href的区别</h2><ul>
+<li>href: 指向网络资源所在的位置，并建立该资源和当前元素(锚点)或当前文档(链接)之间的链路，用于超链接</li>
+<li>src：指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在的位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片，iframe等。</li>
+</ul>
+<h2 id="11-HTML5新特性"><a href="#11-HTML5新特性" class="headerlink" title="11.HTML5新特性"></a>11.HTML5新特性</h2><ul>
+<li>Canvas SVG：用于绘图的元素</li>
+<li>video audio:用于播放视频和音频的媒体</li>
+<li>Drag，Drop：用于拖拽的元素</li>
+<li>Geolocation：用于获取地理位置</li>
+<li>LocalStorage SessionStorage：用于本地离线存储</li>
+<li>web Worker：运行在后台的JavaScript脚本</li>
+<li>webSocket：基于TCP的全双工通信协议</li>
+<li>语义化标签：header main footer nav section等</li>
+<li>新的表单控件：date time url email search等</li>
+</ul>
+<h2 id="12-标准模式和怪异模式的区别"><a href="#12-标准模式和怪异模式的区别" class="headerlink" title="12.标准模式和怪异模式的区别"></a>12.标准模式和怪异模式的区别</h2><ul>
+<li><p>盒模型：标准模式中一个元素的宽高是它内容的宽高，怪异模式下元素的宽高还包含了<code>padding</code>和<code>border</code></p>
+</li>
+<li><p>行内元素宽高：标准模式下行内元素无法设置宽高，怪异模式下则可以</p>
+</li>
+<li><p>水平居中：标准模式下<code>margin: 0 auto</code>可以使元素水平居中，怪异模式下则不行</p>
+</li>
+</ul>
+<h2 id="13-标准盒模型和怪异盒模型"><a href="#13-标准盒模型和怪异盒模型" class="headerlink" title="13.标准盒模型和怪异盒模型"></a>13.标准盒模型和怪异盒模型</h2><p>HTML中每一个元素都可以看作一个盒模型，一个盒模型由<code>content + padding + border + margin</code>组成</p>
+<ul>
+<li><p>标准盒模型：设置盒模型的width和height属性其实是设置内容的宽高，盒模型的宽度等于width + padding + border + margin</p>
+</li>
+<li><p>怪异盒模型：设置盒模型的的width和height属性其实是设置了<code>content + padding + border</code>的值。例如设置width为100px，padding为10px，那么此时内容区域的宽度只有80px(100 - 20 * 2)</p>
+</li>
+<li><p>box-sizing：content-box|border-box|inherit</p>
+</li>
+</ul>
+<h2 id="14-前端结构样式和行为分离"><a href="#14-前端结构样式和行为分离" class="headerlink" title="14.前端结构样式和行为分离"></a>14.前端结构样式和行为分离</h2><p>结构(HTML)相当于人的骨架，样式(CSS)相当于人的装饰，行为(JavaScript)相当于人的动作，前端将这三者分离开，各自负责各自的内容，各部分可以通过引用进行使用</p>
+<p>在分离的基础上，我们需要做到代码的精简，重用，有序</p>
+<p><strong>分离的好处</strong></p>
+<ul>
+<li>代码分离，利于团队的开发和后期的维护；</li>
+<li>减少维护成本，提高可读性和更好的兼容性；</li>
+</ul>
+<h2 id="15-如何对网站的文件和资源进行优化"><a href="#15-如何对网站的文件和资源进行优化" class="headerlink" title="15.如何对网站的文件和资源进行优化"></a>15.如何对网站的文件和资源进行优化</h2><ul>
+<li>文件合并，减少http请求</li>
+<li>文件压缩（<code>gzip</code>压缩需要的css和js文件）</li>
+<li>使用缓存</li>
+<li>使用<code>cdn</code>托管资源</li>
+<li>网站外链接优化</li>
+<li>meta标签优化,设置title keywords description优化等</li>
+</ul>
+<h2 id="16-渐进增强和优雅降级的区别"><a href="#16-渐进增强和优雅降级的区别" class="headerlink" title="16.渐进增强和优雅降级的区别"></a>16.渐进增强和优雅降级的区别</h2><ul>
+<li>渐进增强：优先考虑低版本浏览器的兼容，在保证基本功能可以使用的情况下，再考虑对高级浏览器进行效果，交互等方面的优化</li>
+<li>优雅降级：一开始就构建完整的功能，然后再针对低版本浏览器进行兼容</li>
+</ul>
+<h2 id="17-为什么HTML5不需要DTD"><a href="#17-为什么HTML5不需要DTD" class="headerlink" title="17.为什么HTML5不需要DTD"></a>17.为什么HTML5不需要DTD</h2><p>HTML5中没有使用SGML或XHTML，不需要参考DTD</p>
+<h2 id="18-form表单关闭自动完成-自动联想-功能"><a href="#18-form表单关闭自动完成-自动联想-功能" class="headerlink" title="18.form表单关闭自动完成(自动联想)功能"></a>18.form表单关闭自动完成(自动联想)功能</h2><p>设置<code>autocomplete=off</code></p>
+<h2 id="19-几种图片格式的区别"><a href="#19-几种图片格式的区别" class="headerlink" title="19.几种图片格式的区别"></a>19.几种图片格式的区别</h2><ul>
+<li>png：图片背景透明，可以支持很多颜色</li>
+<li>jpg：图片背景不透明，静态图，可压缩</li>
+<li>gif：动态图，支持颜色较少</li>
+</ul>
+<h2 id="20-meta标签"><a href="#20-meta标签" class="headerlink" title="20.meta标签"></a>20.meta标签</h2><p><code>meta</code>标签常用于定义页面的说明，关键字等元数据，这些数据一般服务于浏览器，搜索引擎，并不会直接向用户展示</p>
+<ul>
+<li>charset：规定HTML文档的字符编码</li>
+<li>http-equiv：一般用于设置一些与http请求头相关的信息，例如<code>content-Type refresh</code>等<ul>
+<li>X-UA-Compatible：一般用于设置浏览器兼容</li>
+</ul>
+</li>
+<li>keywords：设置网页关键字</li>
+<li>description：设置网页的描述内容</li>
+<li>viewport：用于移动端的显示优化</li>
+</ul>
+
+      </section>
+
+    </article>
+    
+    
+
+
+    <!-- 版权声明 -->
+    <div class="post-copyright">
+	<div>
+		<strong>本文作者：</strong>
+		<span>
+			hjc
+		</span>
+	</div>
+	<div>
+		<strong>本文链接：</strong>
+		<a href="https://hjc0930.github.io/HTML">
+			https://hjc0930.github.io/post/HTML
+		</a>
+	</div>
+	<div>
+		<span>欢迎任何形式的转载，但请务必注明出处。</span>
+	</div>
+	<div>
+		<span>由于笔者水平有限，如果文章或代码有表述不当之处，还请不吝赐教。</span>
+	</div>
+</div>
+
+
+<style>
+	.post-copyright {
+		background-color: #fff;
+		/* box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.05); */
+		box-shadow: 0 6px 30px -10px rgba(0, 0, 0, 0.1);
+		display: block;
+		margin: 20px auto;
+		margin-bottom: 15px;
+		padding: 10px;
+		font-size: 15px;
+		color: #2e2d2d;
+		word-break: break-all;
+		line-height: 1.8;
+	}
+
+
+	.post-copyright a {
+		color: #2e2d2d;
+		border-bottom: 1px solid #999;
+	}
+
+	.post-copyright a:hover {
+		color: #2e2d2d;
+		border-bottom: 1px solid #000;
+	}
+</style>
+
+    <!-- comments -->
+    <div class="comments">
+    <h3 id="commenttitle" style="margin-top: 20px;margin-left: 10px;">评论区</h3>
+    <div id="tcomment"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/twikoo@1.0.0/dist/twikoo.all.min.js"></script>
+<script>twikoo.init({ envId: 'hjc-2gcz5b7m7f845ec3', el: '#tcomment' })</script>
+
+    <div class="right-icon">
+      <div id="to-valine" class="right-icon-item">
+        <a href="#commenttitle">评论</a>
+      </div>
+    </div>
+
+  </div>
+
+
+  <aside>
+    <div class="aside-wrap">
+    
+        <section class="widget-wrap">
+    <h3 class="widget-title">简介</h3>
+    <div class="widget">
+        <div class="notice">
+            <img class="notice-img" src="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/logo.png">
+            <p>一个前端程序员的<br>编程笔记和生活记录！</p>
+
+                <p class="notice-item">
+                    <!-- github -->
+                    <span>
+                        <a target="_blank" href="https://github.com/hjc0930">
+                            <img src="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/favicon.png" alt="Github">
+                        </a>
+                    </span>
+                    <!-- juejin -->
+                    <span><a target="_blank" href="https://juejin.cn/user/87601131292839/posts"><img
+                                src="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/juejin.png" alt="掘金社区"></a></span>
+                    <!-- zhihu -->
+                    <!-- <span><a target="_blank" href=""><img src="https://shuxhan-imgbed.oss-cn-hangzhou.aliyuncs.com/img/20210108172745.ico" alt="知乎"></a></span> -->
+                    <!-- csdn -->
+                    <!-- <span><a target="_blank" href=""><img src="https://shuxhan-imgbed.oss-cn-hangzhou.aliyuncs.com/img/20210108172932.ico" alt="CSDN"></a></span> -->
+                </p>
+
+                <ul class="statistics">
+                    <li>
+                        <span>文章</span>
+                        <a href="./archives">
+                            9
+                        </a>
+                    </li>
+                    <li>
+                        <span>字数</span>
+                        <a>
+                            11.5k
+                        </a>
+                    </li>
+                    <li>
+                        <span>访客</span>
+                        <a id="busuanzi_value_site_uv"></a>
+                    </li>
+
+
+                </ul>
+
+                <div id="follow" class="button">
+                    <a target="_blank" href="https://github.com/shuxhan">关注</a>
+                </div>
+        </div>
+    </div>
+</section>
+    
+        
+
+    
+        
+
+    
+        
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul class="recent-posts">
+        
+          <li>
+            <a href="/2022/11/26/webpack/6.devServer/">devServer</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/26/webpack/5.%E6%89%93%E5%8C%85%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90/">打包图片资源</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/26/webpack/4.%E6%89%93%E5%8C%85html%E8%B5%84%E6%BA%90/">打包HTML资源</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/26/webpack/3.%E6%89%93%E5%8C%85%E6%A0%B7%E5%BC%8F%E8%B5%84%E6%BA%90/">打包样式资源</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/26/webpack/2.%E5%88%9D%E5%A7%8B%E5%8C%96/">Webpack初始化</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+        
+  <section class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a></li></ul>
+    </div>
+  </section>
+
+
+    
+        <!-- 
+  <section class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div>
+      <ul class="widget-links">
+          
+          <li>
+              <a href="hjc0930.github.io" title="">
+                  笔记
+              </a>
+          </li>
+          
+      </ul>
+    </div>
+  </section>
+
+
+<style>
+  .widget-links {
+    list-style: none;
+    padding-left: 10px;
+  }
+  .widget-links >li > a:hover {
+    color: #f40;
+    text-decoration: underline;
+  }
+</style> -->
+    
+    
+</div>
+
+
+    <!-- 目录 -->
+    
+  </aside>
+  
+</div>
+
+					</div>
+				</div>
+
+				<!-- 返回顶部按钮 -->
+				<div class="right-icon">
+					<div id="to-top" class="right-icon-item">
+						<a>
+							<span class="top-left"></span>
+							<span class="top-right"></span>
+						</a>
+					</div>
+				</div>
+		</div>
+		<footer class="footer">
+
+    <div class="copyright-wrap">
+      <span>&copy; 2022-2022 hjc</span>
+      <span id="timeDate">载入天数...</span><span id="busuanzi_container_site_pv">
+      总访问量<span id="busuanzi_value_site_pv"></span>次
+    </span>
+    
+</div>
+    
+    
+    <!-- <span id="busuanzi_container_site_uv">
+      ，本站访客数<span id="busuanzi_value_site_uv"></span>人次
+    </span> -->
+    
+</footer>
+
+<script>
+    var now = new Date();
+    function createtime() {
+      var grt = new Date("11/26/2022 00:00:00");//此处修改你的建站时间或者网站上线时间 
+      now.setTime(now.getTime() + 250);
+      days = (now - grt) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+      document.getElementById("timeDate").innerHTML = "本站已安全运行 " + dnum + " 天 ";
+    }
+    setInterval("createtime()", 1000);
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/lib/jquery.js"></script>
+
+
+<script src="/lib/waves.js"></script>
+
+
+<script src="/lib/jquery-ui.js"></script>
+
+
+<script src="/lib/jquery.tocify.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+			
+<style>
+  .copy-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgb(206, 206, 206);
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 3px;
+    user-select: none;
+    outline: 0;
+  }
+
+  .copy-btn:hover {
+    color: #888
+  }
+
+  .highlight-wrap .copy-btn {
+    padding: 2px 6px;
+    position: absolute;
+    right: 10px;
+    top: 1px;
+    z-index: 1;
+  }
+
+
+
+  .highlight-wrap {
+    position: relative;
+  }
+
+  #copysuccess {
+    width: 200px;
+    height: 75px;
+    position: fixed;
+    right: 50%;
+    margin-right: -100px;
+    top: 40%;
+    margin-top: -40px;
+    color: #fff;
+    font-weight: 600;
+    background: #444444d8;
+    display: none;
+    z-index: 99999;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 30px;
+    padding-top: 10px;
+    user-select: none;
+  }
+</style>
+
+<script>
+  addLoadEvent(() => {
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<div>').addClass('copy-btn').append('复制代码').on('click', function (e) {
+        var copysuccess = document.getElementById('copysuccess');
+        copysuccess.style.display = 'block'
+        setTimeout(function () {
+          copysuccess.style.display = 'none'
+        }, 2000)
+        var code = $(this).parent().find(".code")[0].innerText
+          
+                var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+          
+                  if (result) $(this).text('复制成功')
+            else $(this).text('复制失败')
+              
+                $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制代码')
+        }, 1000)
+      }).append(e)
+    })
+  })
+</script>
+
+				<div id="copysuccess">复制成功<br>欢迎阅读文章~</div>
+	</body>
+
+</html>
+
+<script>
+	$('#to-top').click(function () { $('html,body').animate({ scrollTop: '0px' }, 500); return false; });
+</script>

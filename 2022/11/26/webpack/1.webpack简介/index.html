@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   
   <title>
-    归档: 2022/11 | 博客网站
+    Webpack简介 | 博客网站
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta name="theme-color" content="#4184f3">
@@ -133,108 +133,140 @@
 				<div class="container content">
 					<div class="scene_element scene_element--fadein">
 						<div class="row">
-    <div class="main">
-   
-        <article class="title-list">
-            
-            
-            <section>
-                <time class="post-date" datetime="2022-11-26T14:42:16.749Z">
-                    2022-11-26
-                </time>
-                <a href="/2022/11/26/webpack/6.devServer/">
-                    devServer
-                </a>
-                
-            </section>
-            
-            <section>
-                <time class="post-date" datetime="2022-11-26T14:42:16.748Z">
-                    2022-11-26
-                </time>
-                <a href="/2022/11/26/webpack/5.%E6%89%93%E5%8C%85%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90/">
-                    打包图片资源
-                </a>
-                
-            </section>
-            
-            <section>
-                <time class="post-date" datetime="2022-11-26T14:42:16.747Z">
-                    2022-11-26
-                </time>
-                <a href="/2022/11/26/webpack/4.%E6%89%93%E5%8C%85html%E8%B5%84%E6%BA%90/">
-                    打包HTML资源
-                </a>
-                
-            </section>
-            
-            <section>
-                <time class="post-date" datetime="2022-11-26T14:42:16.734Z">
-                    2022-11-26
-                </time>
-                <a href="/2022/11/26/webpack/3.%E6%89%93%E5%8C%85%E6%A0%B7%E5%BC%8F%E8%B5%84%E6%BA%90/">
-                    打包样式资源
-                </a>
-                
-            </section>
-            
-            <section>
-                <time class="post-date" datetime="2022-11-26T14:42:16.733Z">
-                    2022-11-26
-                </time>
-                <a href="/2022/11/26/webpack/2.%E5%88%9D%E5%A7%8B%E5%8C%96/">
-                    Webpack初始化
-                </a>
-                
-            </section>
-            
-            <section>
-                <time class="post-date" datetime="2022-11-26T14:42:16.731Z">
-                    2022-11-26
-                </time>
-                <a href="/2022/11/26/webpack/1.webpack%E7%AE%80%E4%BB%8B/">
-                    Webpack简介
-                </a>
-                
-            </section>
-            
-            <section>
-                <time class="post-date" datetime="2022-11-26T14:10:12.904Z">
-                    2022-11-26
-                </time>
-                <a href="/2022/11/26/HTML/">
-                    HTML笔记
-                </a>
-                
-            </section>
-            
-            <section>
-                <time class="post-date" datetime="2022-11-26T14:10:12.902Z">
-                    2022-11-26
-                </time>
-                <a href="/2022/11/26/CSS/">
-                    CSS笔记
-                </a>
-                
-            </section>
-            
-            <section>
-                <time class="post-date" datetime="2022-11-26T14:10:12.900Z">
-                    2022-11-26
-                </time>
-                <a href="/2022/11/26/JavaScript/">
-                    JavaScript笔记
-                </a>
-                
-            </section>
-            
-        </article>
+  <div class="main main-article">
+    <article>
+
+      
+        <header class="post-header no-cover">
+      
+        </header>
+
+      <!-- 标题 -->
+      <h1 class="post-title">
+        Webpack简介
+      </h1>
+
+      <section class="post-info post-info-bottom">
+
+        <!-- 发布时间 -->
+        <span class="post-date">
+          <span class="post-date-text">
+            发布于: 2022-11-26
+          </span>
+        </span>
         
-  
-    </div>
+        <!-- 分类 -->
+        
+
+        <!-- 标签 -->
+        
+
+        <!-- 阅读量统计 -->
+        
+
+      </section>
+
+      <!-- 正文 -->
+      <section class="post-content">
+        <h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h2><p><img src="/images/webpack.png"></p>
+<p>Webpack是一种前端资源构建工具，一个静态模块打包器(module bundler)</p>
+<p>在Webpack看来，前端的所有资源文件(js/json/css/img/less/…)都会作为模块处理</p>
+<p>它将根据模块的依赖关系进行静态分析，打包生成对应的静态资源(bundle)</p>
+<h2 id="2-原理"><a href="#2-原理" class="headerlink" title="2.原理"></a>2.原理</h2><p>当前端需要引入模块(js文件，样式资源，图片，字体等其他资源)时，webpack会将这些资源交给构建工具去处理，构建工具会从webpack指定的入口文件作为起点开始打包，会将每一个模块记录好，形成依赖关系结构图，然后根据依赖关系图的先后顺序将这些模块引入，形成一个<strong>chunk</strong>代码块，最后将这个代码块中的模块(ts,less,scss…)进行编译打包，形成浏览器所能识别的文件，最后将处理好的资源进行输出，输出的文件称为<strong>bundle</strong></p>
+<h2 id="3-五个核心概念"><a href="#3-五个核心概念" class="headerlink" title="3.五个核心概念"></a>3.五个核心概念</h2><ul>
+<li><p>Entry</p>
+<p>入口(Entry)指示，Webpack以哪个文件为入口起点开始打包，分析构建内部依赖图</p>
+</li>
+<li><p>Output</p>
+<p>输出(Output)指示Webpack打包后的资源bundles输出到哪里去，以及如何命名</p>
+</li>
+<li><p>Loader(loader放在module模块的rules数组中)</p>
+<p>Loader让Webpack能够去处理那些非JavaScript文件(Webpack自身只能理解JavaScript)</p>
+</li>
+<li><p>Plugins</p>
+<p>插件(Plugins)可以用于执行范围更广的任务，插件的范围包括，从打包优化和压缩，一直到重新定义环境中的变量等。</p>
+</li>
+<li><p>Mode</p>
+<p>打包的模式(development production)</p>
+</li>
+</ul>
+
+      </section>
+
+    </article>
     
-    <aside>
-        <div class="aside-wrap">
+    
+
+
+    <!-- 版权声明 -->
+    <div class="post-copyright">
+	<div>
+		<strong>本文作者：</strong>
+		<span>
+			hjc
+		</span>
+	</div>
+	<div>
+		<strong>本文链接：</strong>
+		<a href="https://hjc0930.github.io/webpack/1.webpack简介">
+			https://hjc0930.github.io/post/webpack/1.webpack简介
+		</a>
+	</div>
+	<div>
+		<span>欢迎任何形式的转载，但请务必注明出处。</span>
+	</div>
+	<div>
+		<span>由于笔者水平有限，如果文章或代码有表述不当之处，还请不吝赐教。</span>
+	</div>
+</div>
+
+
+<style>
+	.post-copyright {
+		background-color: #fff;
+		/* box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.05); */
+		box-shadow: 0 6px 30px -10px rgba(0, 0, 0, 0.1);
+		display: block;
+		margin: 20px auto;
+		margin-bottom: 15px;
+		padding: 10px;
+		font-size: 15px;
+		color: #2e2d2d;
+		word-break: break-all;
+		line-height: 1.8;
+	}
+
+
+	.post-copyright a {
+		color: #2e2d2d;
+		border-bottom: 1px solid #999;
+	}
+
+	.post-copyright a:hover {
+		color: #2e2d2d;
+		border-bottom: 1px solid #000;
+	}
+</style>
+
+    <!-- comments -->
+    <div class="comments">
+    <h3 id="commenttitle" style="margin-top: 20px;margin-left: 10px;">评论区</h3>
+    <div id="tcomment"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/twikoo@1.0.0/dist/twikoo.all.min.js"></script>
+<script>twikoo.init({ envId: 'hjc-2gcz5b7m7f845ec3', el: '#tcomment' })</script>
+
+    <div class="right-icon">
+      <div id="to-valine" class="right-icon-item">
+        <a href="#commenttitle">评论</a>
+      </div>
+    </div>
+
+  </div>
+
+
+  <aside>
+    <div class="aside-wrap">
     
         <section class="widget-wrap">
     <h3 class="widget-title">简介</h3>
@@ -365,9 +397,11 @@
     
 </div>
 
-    </aside>
-   
+
+    <!-- 目录 -->
     
+  </aside>
+  
 </div>
 
 					</div>
