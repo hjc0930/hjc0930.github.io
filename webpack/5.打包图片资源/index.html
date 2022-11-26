@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   
   <title>
-    打包HTML资源 | 博客网站
+    打包图片资源 | 博客网站
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta name="theme-color" content="#4184f3">
@@ -143,7 +143,7 @@
 
       <!-- 标题 -->
       <h1 class="post-title">
-        打包HTML资源
+        打包图片资源
       </h1>
 
       <section class="post-info post-info-bottom">
@@ -168,13 +168,11 @@
 
       <!-- 正文 -->
       <section class="post-content">
-        <h2 id="1-打包html文件"><a href="#1-打包html文件" class="headerlink" title="1.打包html文件"></a>1.打包html文件</h2><ul>
-<li><p>下载plugin: <code>html-webpack-plugin</code></p>
-</li>
-<li><p>使用</p>
-</li>
+        <h2 id="1-打包图片资源"><a href="#1-打包图片资源" class="headerlink" title="1.打包图片资源"></a>1.打包图片资源</h2><ul>
+<li>webpack打包图片资源需要下载两个loader: <code>url-loader</code> <code>file-loader</code></li>
+<li><code>url-loader</code> 依赖于<code>file-loader</code>，在配置时只需要引入一个loader即可</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">HtmlWebpackPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;html-webpack-plugin&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">HtmlWebpackPlugin</span>(&#123;</span><br><span class="line">      <span class="comment">// 复制指定的html文件，并自动引入打包后的所有资源</span></span><br><span class="line">      <span class="attr">template</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;../src/index.html&#x27;</span>)</span><br><span class="line">    &#125;),</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dirs = <span class="built_in">require</span>(<span class="string">&#x27;./dirs&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">        <span class="comment">/** 处理图片资源，需要 url-loader file-loader */</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">test</span>: <span class="regexp">/\.(png|jpe?g|gif|svg)(\?.*)?$/</span>,</span><br><span class="line">            <span class="attr">use</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">loader</span>: <span class="string">&#x27;url-loader&#x27;</span>,</span><br><span class="line">                    <span class="attr">options</span>: &#123;</span><br><span class="line">                        <span class="attr">limit</span>: <span class="number">5</span> * <span class="number">1000</span>,</span><br><span class="line">                        <span class="attr">include</span>: dirs.<span class="property">src</span>,</span><br><span class="line">                        <span class="comment">// 打包后的图片路径以及命名</span></span><br><span class="line">                        <span class="attr">name</span>: <span class="string">&#x27;images/[path][name].[ext]&#x27;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
       </section>
@@ -194,8 +192,8 @@
 	</div>
 	<div>
 		<strong>本文链接：</strong>
-		<a href="https://hjc0930.github.io/webpack/4.打包html资源">
-			https://hjc0930.github.io/post/webpack/4.打包html资源
+		<a href="https://hjc0930.github.io/webpack/5.打包图片资源">
+			https://hjc0930.github.io/webpack/5.打包图片资源
 		</a>
 	</div>
 	<div>
@@ -318,23 +316,23 @@
       <ul class="recent-posts">
         
           <li>
-            <a href="/2022/11/26/webpack/6.devServer/">devServer</a>
+            <a href="/webpack/6.devServer/">devServer</a>
           </li>
         
           <li>
-            <a href="/2022/11/26/webpack/5.%E6%89%93%E5%8C%85%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90/">打包图片资源</a>
+            <a href="/webpack/5.%E6%89%93%E5%8C%85%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90/">打包图片资源</a>
           </li>
         
           <li>
-            <a href="/2022/11/26/webpack/4.%E6%89%93%E5%8C%85html%E8%B5%84%E6%BA%90/">打包HTML资源</a>
+            <a href="/webpack/4.%E6%89%93%E5%8C%85html%E8%B5%84%E6%BA%90/">打包HTML资源</a>
           </li>
         
           <li>
-            <a href="/2022/11/26/webpack/3.%E6%89%93%E5%8C%85%E6%A0%B7%E5%BC%8F%E8%B5%84%E6%BA%90/">打包样式资源</a>
+            <a href="/webpack/3.%E6%89%93%E5%8C%85%E6%A0%B7%E5%BC%8F%E8%B5%84%E6%BA%90/">打包样式资源</a>
           </li>
         
           <li>
-            <a href="/2022/11/26/webpack/2.%E5%88%9D%E5%A7%8B%E5%8C%96/">Webpack初始化</a>
+            <a href="/webpack/2.%E5%88%9D%E5%A7%8B%E5%8C%96/">Webpack初始化</a>
           </li>
         
       </ul>
