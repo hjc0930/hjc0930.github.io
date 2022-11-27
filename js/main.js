@@ -1,124 +1,139 @@
-$(function() {
-    var isPhone = $(window).width() < 768;
+/* eslint-disable node/no-unsupported-features/node-builtins */
+(function($, moment, ClipboardJS, config) {
+    $('.article img:not(".not-gallery-item")').each(function() {
+        // wrap images with link and add caption if possible
+        if ($(this).parent('a').length === 0) {
+            $(this).wrap('<a class="gallery-item" href="' + $(this).attr('src') + '"></a>');
+            if (this.alt) {
+                $(this).after('<p class="has-text-centered is-size-6 caption">' + this.alt + '</p>');
+            }
+        }
+    });
 
-    init();
-
-    function init() {
-        // $('.material-preloader').hide();
-        initialNavToggle();
-        setupRipple();
-        slidingBorder();
-        toc();
-
-        // $('.post-content img').on('click',function(){
-        //     window.open($(this).attr('src'));
-        // });
+    if (typeof $.fn.lightGallery === 'function') {
+        $('.article').lightGallery({ selector: '.gallery-item' });
+    }
+    if (typeof $.fn.justifiedGallery === 'function') {
+        if ($('.justified-gallery > p > .gallery-item').length) {
+            $('.justified-gallery > p > .gallery-item').unwrap();
+        }
+        $('.justified-gallery').justifiedGallery();
     }
 
-    function slidingBorder() {
-        // sliding border
-        var $activeState = $('.nav-indicator', 'nav'),
-            $navParent = $('.menu-wrapper', 'nav'),
-            overNav = false,
-            $hoveredLink,
-            $activeLink = $("ul.menus li.active a"),
-            activeHideTimeout;
-        setActiveLink(true);
-        $('.menu-wrapper ul.menus li').on('mousemove', onLinkHover);
-        $('.menu-wrapper').on('mouseleave', onLinksLeave);
-
-        function onLinkHover(e) {
-            if (!isPhone) {
-                $hoveredLink = e.target ? $(e.target) : e;
-                if (!$hoveredLink.is('li')) {
-                    $hoveredLink = $hoveredLink.parent('li');
-                }
-                var left = $hoveredLink.offset().left - $navParent.offset().left,
-                    width = $hoveredLink.width();
-                if (0 != $activeLink.length || overNav) {
-                    $activeState.css({
-                        transform: "translate3d(" + left + "px, 0, 0) scaleX(" + width / 100 + ")"
-                    });
-                } else {
-                    clearTimeout(activeHideTimeout),
-                        $activeState.css({
-                            transform: "translate3d(" + (left + width / 2) + "px, 0, 0) scaleX(0.001)"
-                        });
-                    setTimeout(function() {
-                        $activeState.addClass("animate-indicator").css({
-                            transform: "translate3d(" + left + "px, 0, 0) scaleX(" + width / 100 + ")"
-                        })
-                    }, 10);
-                }
-                overNav = true;
-            }
-        }
-
-        function onLinksLeave(e) {
-            if (!isPhone) {
-                if (0 == $activeLink.length) {
-                    var left = $hoveredLink.offset().left - $navParent.offset().left,
-                        width = $hoveredLink.width();
-                    $activeState.css({
-                        'transform': "translate3d(" + (left + width / 2) + "px, 0, 0) scaleX(0.001)"
-                    });
-                    activeHideTimeout = setTimeout(function() {
-                        $activeState.removeClass("animate-indicator")
-                    }, 200);
-                } else {
-                    onLinkHover($activeLink);
-                }
-                overNav = false;
-            }
-        }
-
-        function setActiveLink(load) {
-            if ($activeLink.length > 0) {
-                var left = $activeLink.offset().left - $navParent.offset().left;
-                $activeState.css({
-                    'transform': "translate3d(" + (left + $activeLink.width() / 2) + "px, 0, 0) scaleX(0.001)"
-                });
-                setTimeout(function() {
-                    $activeState.addClass("animate-indicator"),
-                        onLinkHover($activeLink)
-                }, 100);
-            }
-        }
+    if (typeof moment === 'function') {
+        $('.article-meta time').each(function() {
+            $(this).text(moment($(this).attr('datetime')).fromNow());
+        });
     }
 
-    function toc() {
-        if (!isPhone) {
-            //toc
-            $('#toc').html('');
-            $('#toc').tocify({
-                'selectors': 'h2,h3',
-                'extendPage': false,
-                'theme': 'none',
-                'scrollHistory':false
+    $('.article > .content > table').each(function() {
+        if ($(this).width() > $(this).parent().width()) {
+            $(this).wrap('<div class="table-overflow"></div>');
+        }
+    });
+
+    function adjustNavbar() {
+        const navbarWidth = $('.navbar-main .navbar-start').outerWidth() + $('.navbar-main .navbar-end').outerWidth();
+        if ($(document).outerWidth() < navbarWidth) {
+            $('.navbar-main .navbar-menu').addClass('justify-content-start');
+        } else {
+            $('.navbar-main .navbar-menu').removeClass('justify-content-start');
+        }
+    }
+    adjustNavbar();
+    $(window).resize(adjustNavbar);
+
+    function toggleFold(codeBlock, isFolded) {
+        const $toggle = $(codeBlock).find('.fold i');
+        !isFolded ? $(codeBlock).removeClass('folded') : $(codeBlock).addClass('folded');
+        !isFolded ? $toggle.removeClass('fa-angle-right') : $toggle.removeClass('fa-angle-down');
+        !isFolded ? $toggle.addClass('fa-angle-down') : $toggle.addClass('fa-angle-right');
+    }
+
+    function createFoldButton(fold) {
+        return '<span class="fold">' + (fold === 'unfolded' ? '<i class="fas fa-angle-down"></i>' : '<i class="fas fa-angle-right"></i>') + '</span>';
+    }
+
+    $('figure.highlight table').wrap('<div class="highlight-body">');
+    if (typeof config !== 'undefined'
+        && typeof config.article !== 'undefined'
+        && typeof config.article.highlight !== 'undefined') {
+
+        $('figure.highlight').addClass('hljs');
+        $('figure.highlight .code .line span').each(function() {
+            const classes = $(this).attr('class').split(/\s+/);
+            if (classes.length === 1) {
+                $(this).addClass('hljs-' + classes[0]);
+                $(this).removeClass(classes[0]);
+            }
+        });
+
+
+        const clipboard = config.article.highlight.clipboard;
+        const fold = config.article.highlight.fold.trim();
+
+        $('figure.highlight').each(function() {
+            if ($(this).find('figcaption').length) {
+                $(this).find('figcaption').addClass('level is-mobile');
+                $(this).find('figcaption').append('<div class="level-left">');
+                $(this).find('figcaption').append('<div class="level-right">');
+                $(this).find('figcaption div.level-left').append($(this).find('figcaption').find('span'));
+                $(this).find('figcaption div.level-right').append($(this).find('figcaption').find('a'));
+            } else {
+                if (clipboard || fold) {
+                    $(this).prepend('<figcaption class="level is-mobile"><div class="level-left"></div><div class="level-right"></div></figcaption>');
+                }
+            }
+        });
+
+        if (typeof ClipboardJS !== 'undefined' && clipboard) {
+            $('figure.highlight').each(function() {
+                const id = 'code-' + Date.now() + (Math.random() * 1000 | 0);
+                const button = '<a href="javascript:;" class="copy" title="Copy" data-clipboard-target="#' + id + ' .code"><i class="fas fa-copy"></i></a>';
+                $(this).attr('id', id);
+                $(this).find('figcaption div.level-right').append(button);
+            });
+            new ClipboardJS('.highlight .copy'); // eslint-disable-line no-new
+        }
+
+        if (fold) {
+            $('figure.highlight').each(function() {
+                $(this).addClass('foldable'); // add 'foldable' class as long as fold is enabled
+
+                if ($(this).find('figcaption').find('span').length > 0) {
+                    const span = $(this).find('figcaption').find('span');
+                    if (span[0].innerText.indexOf('>folded') > -1) {
+                        span[0].innerText = span[0].innerText.replace('>folded', '');
+                        $(this).find('figcaption div.level-left').prepend(createFoldButton('folded'));
+                        toggleFold(this, true);
+                        return;
+                    }
+                }
+                $(this).find('figcaption div.level-left').prepend(createFoldButton(fold));
+                toggleFold(this, fold === 'folded');
+            });
+
+            $('figure.highlight figcaption .level-left').click(function() {
+                const $code = $(this).closest('figure.highlight');
+                toggleFold($code.eq(0), !$code.hasClass('folded'));
             });
         }
     }
 
-    function initialNavToggle() {
-        //nav icon morphing
-        $('.nav-toggle-icon').click(function() {
-            $('body').toggleClass('nav-active');
-            $(this).toggleClass('active').find('.material-hamburger').toggleClass('opened');
-            $('.menu-wrapper').toggleClass('active');
-            $('.logo').toggleClass('fixed');
-        });
+    const $toc = $('#toc');
+    if ($toc.length > 0) {
+        const $mask = $('<div>');
+        $mask.attr('id', 'toc-mask');
+
+        $('body').append($mask);
+
+        function toggleToc() { // eslint-disable-line no-inner-declarations
+            $toc.toggleClass('is-active');
+            $mask.toggleClass('is-active');
+        }
+
+        $toc.on('click', toggleToc);
+        $mask.on('click', toggleToc);
+        $('.navbar-main .catalogue').on('click', toggleToc);
     }
-
-    function setupRipple() {
-        // ripple click http://fian.my.id/Waves/#start
-        Waves.attach('.wave');
-        Waves.attach('.main.index .post-header.with-cover');
-        Waves.attach('.pagination a');
-        Waves.attach('.pager .pager-item', ['waves-button']);
-        Waves.attach('.btn', ['waves-button']);
-        Waves.init();
-    }
-
-})
-
-
+}(jQuery, window.moment, window.ClipboardJS, window.IcarusThemeSettings));
