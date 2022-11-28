@@ -1,6 +1,11 @@
 ---
 title: JavaScript笔记
 excerpt: JS相关笔记
+toc: true
+tag: 'JavaScript'
+categories:
+- 前端
+- JavaScript
 ---
 
 ## 1.深拷贝和浅拷贝
