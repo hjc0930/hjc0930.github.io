@@ -4,23 +4,15 @@ on:
     branches:
       - release
 jobs:
-  # 任务ID
   build:
-    # 运行环境
     runs-on: ubuntu-latest
-    # 步骤
     steps:
-    # 使用别人的action
     - uses: actions/checkout@v2
-    # 步骤名称
-    - name: 下载依赖
-      # 步骤执行指令
-      run: npm install
-    - name: 编译
-      run: npm run build
-    # 命名这个任务为发布Deploy
-    - name: Deploy
-      # 因为构建之后，需要把代码上传到服务器上，所以需要连接到ssh，并且做一个拷贝操作
+#     - name: 下载依赖
+#       run: npm install
+#     - name: 编译
+#       run: npm run build
+    - name: 发布
       uses: cross-the-world/scp-pipeline@master
       env:
         WELCOME: "ssh scp ssh pipelines"
