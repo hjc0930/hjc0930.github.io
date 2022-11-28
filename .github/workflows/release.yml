@@ -22,5 +22,5 @@ jobs:
         user: ${{ secrets.USER_NAME }}
         pass: ${{ secrets.USER_PASS }}
         connect_timeout: 10s
-        local: './.deploy_git/*'
+        local: './*'
         remote: /usr/workspace/static_blog
