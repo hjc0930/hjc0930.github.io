@@ -1,0 +1,131 @@
+<hr>
+<p>title: ES6运算符的扩展<br>excerpt: ES6运算符的扩展<br>toc: true<br>tag: ‘JavaScript’<br>categories:</p>
+<ul>
+<li>前端</li>
+<li>JavaScript</li>
+</ul>
+<hr>
+<h2 id="1-指数运算符"><a href="#1-指数运算符" class="headerlink" title="1.指数运算符"></a>1.指数运算符</h2><p>ES2016新增的指数运算符<code>**</code></p>
+<pre><code class="js">2** 2 // 4
+2 ** 3 // 8
+
+// 相当于
+Math.pow(2,2)
+Math.pow(2,3)
+</code></pre>
+<ul>
+<li>指数运算符的特点是右结合</li>
+</ul>
+<pre><code class="js">2 ** 3 ** 2 // 512
+
+//相当于 2 ** (3 ** 2)
+</code></pre>
+<ul>
+<li>指数运算符可以和等号结合</li>
+</ul>
+<pre><code class="js">let a = 3;
+
+a **= 3; // 相当于 a = a ** 3;
+</code></pre>
+<h2 id="2-链式判断运算符"><a href="#2-链式判断运算符" class="headerlink" title="2.链式判断运算符"></a>2.链式判断运算符</h2><p>当我们想要读取变量中的某个属性并进行一定操作时，往往需要判断一下对象中的属性是否存在</p>
+<pre><code class="js">// 错误的写法
+const  firstName = message.body.user.firstName || &#39;default&#39;;
+
+// 正确的写法(需要判断四次)
+const firstName = (message
+  &amp;&amp; message.body
+  &amp;&amp; message.body.user
+  &amp;&amp; message.body.user.firstName) || &#39;default&#39;;
+</code></pre>
+<p>或者使用三元运算符</p>
+<pre><code class="js">const fooInput = myForm.querySelector(&#39;input[name=foo]&#39;)
+const fooValue = fooInput ? fooInput.value : undefined
+</code></pre>
+<p>ES2020引入了链判断运算符，来简化这些判断<code>?.</code></p>
+<pre><code class="js">const firstName = message?.body?.user?.firstName || &#39;default&#39;;
+const fooValue = myForm.querySelector(&#39;input[name=foo]&#39;)?.value
+</code></pre>
+<p>使用链判断运算符的语句，直接在调用时会判断左侧的对象是否为<code>null</code>或<code>undefined</code>，如果是，则停止往下执行并返回<code>undefined</code></p>
+<h3 id="常见写法"><a href="#常见写法" class="headerlink" title="常见写法"></a>常见写法</h3><pre><code class="js">a?.b
+// 等同于
+a == null ? undefined : a.b
+
+a?.[x]
+// 等同于
+a == null ? undefined : a[x]
+
+a?.b()
+// 等同于
+a == null ? undefined : a.b()
+
+a?.()
+// 等同于
+a == null ? undefined : a()
+</code></pre>
+<p>本质上，<code>?.</code>运算符相当于一种短路机制，只要不满足条件，就不再往下执行</p>
+<p>如果属性链中带有括号，那么链判断运算符对括号外部没有影响</p>
+<pre><code class="js">(a?.b).c;
+ // 等价于
+ (a == null ? undefined : a.b).c
+</code></pre>
+<h3 id="禁止使用的场景"><a href="#禁止使用的场景" class="headerlink" title="禁止使用的场景"></a>禁止使用的场景</h3><pre><code class="js">// 构造函数
+new a?.()
+new a?.b()
+
+// 右侧是模板字符串
+a?.`${b}`;
+
+// 左侧是super
+super?.foo()
+
+// 在赋值的左侧
+a?.b = c;
+</code></pre>
+<h2 id="3-空值合并运算符"><a href="#3-空值合并运算符" class="headerlink" title="3.空值合并运算符"></a>3.空值合并运算符</h2><p>读取对象属性时，如果这个属性是<code>null</code>或者<code>undefined</code>，有时候需要为它们指定默认值，常见的做法是通过<code>||</code></p>
+<pre><code class="js">const a?.b || &#39;a&#39;;
+</code></pre>
+<p>但<code>||</code>使用运算符会导致只要左侧转换后的布尔值是false，就会执行右侧</p>
+<p>而在js中，<code>false &quot;&quot; NaN 0 null undefined</code>等都会被判断为false</p>
+<p>为了了避免这种情况，ES2020引入了一个新的null判断运算符<code>??</code>，只有在左侧是<code>null</code>或者<code>undefined</code>时才会返回右侧的值</p>
+<pre><code class="js">const a?.b ?? &#39;a&#39;;
+</code></pre>
+<h3 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h3><p><code>??</code>本质上是逻辑运算符，与<code>||</code>和<code>&amp;&amp;</code>一起使用时存在优先级问题，必须使用括号来表示哪个优先级更高</p>
+<pre><code class="js">(lhs &amp;&amp; middle) ?? rhs;
+lhs &amp;&amp; (middle ?? rhs);
+
+(lhs ?? middle) &amp;&amp; rhs;
+lhs ?? (middle &amp;&amp; rhs);
+
+(lhs || middle) ?? rhs;
+lhs || (middle ?? rhs);
+
+(lhs ?? middle) || rhs;
+lhs ?? (middle || rhs);
+</code></pre>
+<h2 id="4-逻辑赋值运算符"><a href="#4-逻辑赋值运算符" class="headerlink" title="4.逻辑赋值运算符"></a>4.逻辑赋值运算符</h2><p>ES2021引入了三个逻辑赋值运算符</p>
+<pre><code class="js">x ||= y // 相当于 x || (x = y)
+
+x ??= y // 相当于 x ?? (x = y)
+
+x &amp;&amp;= y // 相当于 x &amp;&amp; (x = y)
+</code></pre>
+<p>它们的一个用途是，为变量或属性设置默认值。</p>
+<pre><code class="javascript">// 老的写法
+user.id = user.id || 1;
+
+// 新的写法
+user.id ||= 1;
+</code></pre>
+<p>上面示例中，<code>user.id</code>属性如果不存在，则设为<code>1</code>，新的写法比老的写法更紧凑一些。</p>
+<p>下面是另一个例子。</p>
+<pre><code class="javascript">function example(opts) {
+  opts.foo = opts.foo ?? &#39;bar&#39;;
+  opts.baz ?? (opts.baz = &#39;qux&#39;);
+}
+</code></pre>
+<p>上面示例中，参数对象<code>opts</code>如果不存在属性<code>foo</code>和属性<code>baz</code>，则为这两个属性设置默认值。有了“Null 赋值运算符”以后，就可以统一写成下面这样。</p>
+<pre><code class="javascript">function example(opts) {
+  opts.foo ??= &#39;bar&#39;;
+  opts.baz ??= &#39;qux&#39;;
+}
+</code></pre>

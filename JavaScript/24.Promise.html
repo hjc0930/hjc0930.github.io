@@ -1,0 +1,195 @@
+<hr>
+<p>title: Promise<br>excerpt: Promise 是异步编程的一种解决方案<br>toc: true<br>tag: ‘JavaScript’<br>categories:</p>
+<ul>
+<li>前端</li>
+<li>JavaScript</li>
+</ul>
+<hr>
+<h2 id="1-Promise"><a href="#1-Promise" class="headerlink" title="1.Promise"></a>1.Promise</h2><blockquote>
+<p>Promise 是异步编程的一种解决方案： 从语法上讲，promise是一个对象，从它可以获取异步操作的消息；</p>
+<p>从本意上讲，它是承诺，承诺它过一段时间会给你一个结果。 promise有三种状态：**pending(等待态)，fulfiled(成功态)，rejected(失败态)**；状态一旦改变，就不会再变。创造promise实例后，它会立即执行。</p>
+</blockquote>
+<p><code>Promise</code>对象有以下两个特点：</p>
+<ul>
+<li><p>对象的状态不受外界影响，<code>Promise</code>对象代表一个异步操作，有三种状态：<code>pending</code>(进行中)，<code>fulfilled</code>(已成功)和<code>rejected</code>(已失败)，只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态，这也是<code>Promise</code>这个名字的由来。</p>
+</li>
+<li><p>一旦状态改变，就不会再变，任何时候都可以得到这个结果，<code>Promise</code>对象状态改变，只有两种情况，从<code>pending</code>变为<code>fufilled</code>和从<code>pending</code>变为<code>rejected</code>，只要这两种情况发生，状态就凝固了，不会再变了，这时就称为resolved。如果改变已经发生了，你再对<code>Promise</code>对象添加回调函数，也会立即得到这个结果。这与事件（Event）完全不同，事件的特点是，如果你错过了它，再去监听，是得不到结果的。</p>
+</li>
+<li><p><code>Promise</code>也有一些缺点。首先，无法取消<code>Promise</code>，一旦新建它就会立即执行，无法中途取消。其次，如果不设置回调函数，<code>Promise</code>内部抛出的错误，不会反应到外部。第三，当处于<code>pending</code>状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。</p>
+</li>
+</ul>
+<h2 id="2-实例方法"><a href="#2-实例方法" class="headerlink" title="2.实例方法"></a>2.实例方法</h2><ul>
+<li><p>Promise.prototype.then()</p>
+<p>为Promise实例添加状态改变时的回调函数，第一个参数是<code>resolve</code>状态的回调函数，第二个参数是<code>reject</code>状态的回调函数</p>
+<p><strong>then方法会返回一个新的Promise实例</strong>，因此可以采用链式写法，即then后面再调用一个then</p>
+<pre><code class="js">fetch(&#39;/api/xxx&#39;).then(res =&gt; res.json()).then(data =&gt; console.log(data))
+</code></pre>
+</li>
+<li><p>Promise.prototype.catch()</p>
+<p>catch方法是<code>.then(_,rejection)</code>方法的别名，用于指定发生错误时的回调函数</p>
+<p><code>catch</code>方法不仅可以捕获<code>reject</code>函数的回调，也能捕获异步运行时抛出的异常</p>
+<pre><code class="js">const promise = new Promise(function(resolve, reject) {
+  throw new Error(&#39;test&#39;);
+});
+promise.catch(function(error) {
+  console.log(error);
+});
+// Error: test
+</code></pre>
+<p>上面代码中，<code>promise</code>抛出一个错误，就被<code>catch()</code>方法指定的回调函数捕获。注意，上面的写法与下面两种写法是等价的。</p>
+<pre><code class="javascript">// 写法一
+const promise = new Promise(function(resolve, reject) {
+  try {
+    throw new Error(&#39;test&#39;);
+  } catch(e) {
+    reject(e);
+  }
+});
+promise.catch(function(error) {
+  console.log(error);
+});
+
+// 写法二
+const promise = new Promise(function(resolve, reject) {
+  reject(new Error(&#39;test&#39;));
+});
+promise.catch(function(error) {
+  console.log(error);
+});
+</code></pre>
+</li>
+<li><p>Promise.prototyp.finally()</p>
+<p><code>finally</code>方法用于指定不管Promise对象最后状态如何，都会执行操作。</p>
+<pre><code class="js">promise
+.then(result =&gt; {···})
+.catch(error =&gt; {···})
+.finally(() =&gt; {···});
+</code></pre>
+</li>
+</ul>
+<h2 id="3-静态方法"><a href="#3-静态方法" class="headerlink" title="3.静态方法"></a>3.静态方法</h2><ul>
+<li><p>Promise.all()</p>
+<p><code>Promise.all()</code>方法用于将多个Promise实例，包装成一个新的Promise实例，并且只有当所有Promise实例状态都变成<code>fulfilled</code>，该实例的状态才会变成<code>fulfilled</code>，并返回实例返回值组成的一个数组。</p>
+<p>该方法常用于多个接口的并发请求</p>
+<pre><code class="js">Promise.all(api1, api2, api3).then(res =&gt; console.log(res)) // 会返回三个接口数据组成的数组
+</code></pre>
+<p> 如果有一个实例的状态变为<code>rejected</code>，那么该实例的状态就会变为<code>rejected</code></p>
+</li>
+<li><p>Promise.race()</p>
+<p>该方法同样是将多个Promise实例，包装成一个新的Promise实例</p>
+<p>只要被包裹的Promise实例中，有一个状态变为<code>fulfilled</code>，那么该实例的状态就直接变为<code>fulfilled</code></p>
+<p>如果有一个被包裹的Promise状态变为<code>rejected</code>，那么Promise状态就会变为<code>reject</code></p>
+</li>
+<li><p>Promise.allSettled()</p>
+<p>Promise.allSettled()方法，用来确定一组异步组件操作是否都结束了，只有当被包裹的对象都发生了状态变更，返回的Promise对象才会发生状态变更</p>
+</li>
+<li><p>Promise.any()</p>
+<p>ES2021引入的新方法，只要被包裹的实例有一个变成<code>fulfilled</code>状态，包装实例就会变成<code>fulfilled</code>，如果所有参数实例都变成<code>rejected</code>，包装实例就会变成<code>rejected</code>状态</p>
+</li>
+<li><p>Promise.resolve()</p>
+<p><code>Promise.resolve</code>方法将一个对象转为Promise对象,其参数分为四种情况</p>
+<ul>
+<li><p>参数是一个Promise实例</p>
+<p>如果参数是一个Promise实例，将不做修改，原封不动地返回这个实例</p>
+</li>
+<li><p>参数是一个thenable实例</p>
+<p><code>thenable</code>对象是指具有then方法的对象，Promise.resolve方法会将这个对象转为Promise对象，然后执行thenable对象的then方法</p>
+<pre><code class="js">let thenable = {
+  then: function(resolve, reject) {
+    resolve(42);
+  }
+};
+
+let p1 = Promise.resolve(thenable);
+p1.then(function (value) {
+  console.log(value);  // 42
+});
+</code></pre>
+</li>
+<li><p>参数不具有then()方法的对象，或者根本就不是对象</p>
+<p><strong>参数不是具有<code>then()</code>方法的对象，或根本就不是对象</strong></p>
+<p>如果参数是一个原始值，或者是一个不具有<code>then()</code>方法的对象，则<code>Promise.resolve()</code>方法返回一个新的 Promise 对象，状态为<code>resolved</code>。</p>
+<pre><code class="javascript">const p = Promise.resolve(&#39;Hello&#39;);
+
+p.then(function (s) {
+  console.log(s)
+});
+// Hello
+</code></pre>
+</li>
+<li><p>不带任何参数</p>
+<p><code>Promise.resolve()</code>方法允许调用时不带参数，直接返回一个<code>resolved</code>状态的 Promise 对象。</p>
+<p>所以，如果希望得到一个 Promise 对象，比较方便的方法就是直接调用<code>Promise.resolve()</code>方法。</p>
+<pre><code class="javascript">const p = Promise.resolve();
+
+p.then(function () {
+  // ...
+});
+</code></pre>
+<p>需要注意的是，立即<code>resolve()</code>的 Promise 对象，是在本轮“事件循环”（event loop）的结束时执行，而不是在下一轮“事件循环”的开始时。</p>
+<pre><code class="javascript">setTimeout(function () {
+  console.log(&#39;three&#39;);
+}, 0);
+
+Promise.resolve().then(function () {
+  console.log(&#39;two&#39;);
+});
+
+console.log(&#39;one&#39;);
+
+// one
+// two
+// three
+</code></pre>
+<p>上面代码中，<code>setTimeout(fn, 0)</code>在下一轮“事件循环”开始时执行，<code>Promise.resolve()</code>在本轮“事件循环”结束时执行，<code>console.log(&#39;one&#39;)</code>则是立即执行，因此最先输出。</p>
+</li>
+</ul>
+</li>
+<li><p>Promise.reject()</p>
+<p><code>Promise.reject(reason)</code>方法也会返回一个新的Promise实例，该实例的状态为<code>rejected</code></p>
+<pre><code class="js">const p = Promise.reject(&#39;出错了&#39;);
+// 等同于
+const p = new Promise((resolve, reject) =&gt; reject(&#39;出错了&#39;))
+
+p.then(null, function (s) {
+  console.log(s)
+});
+// 出错了
+</code></pre>
+</li>
+</ul>
+<h2 id="4-应用"><a href="#4-应用" class="headerlink" title="4.应用"></a>4.应用</h2><ul>
+<li>对事件监听处理异步的二次封装</li>
+</ul>
+<p>Pormise在实际业务开发中常用于事件监听解决异步的二次封装</p>
+<p>例如将图片转为Base64编码格式时，需要实例化一个<code>FileReader</code>对象，并且添加<code>load</code>事件监听</p>
+<p>如果不用Promise处理，则需要传入一个回调函数获取</p>
+<pre><code class="js">function getBase64(img, callback) {
+    const reader  new FileReader();
+    reader.addEventListener(&#39;load&#39;, () =&gt; callback(reader.result));
+      reader.readAsDataURL(img);
+}
+
+// 使用
+getBase64(img, baseUrl =&gt;
+    this.setState({
+      baseUrl
+    }),
+);
+</code></pre>
+<p>如果使用Promise进行处理，则可以这么写</p>
+<pre><code class="js">function getBase65(img) {
+    return new Promise(resolve =&gt; {
+        const reader  new FileReader();
+        reader.addEventListener(&#39;load&#39;, () =&gt; resolve(reader.result));
+        reader.readAsDataURL(img);
+    })
+}
+
+// 使用
+getBase64(img).then(baseUrl =&gt; {
+     this.setState({
+      baseUrl
+    }),
+})
+</code></pre>

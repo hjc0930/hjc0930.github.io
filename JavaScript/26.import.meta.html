@@ -1,0 +1,12 @@
+<hr>
+<p>title: import.meta属性<br>excerpt: import.meta是一个给JavaScript模块暴露特定上下文的元数据属性的对象。有ECMAScript实现，原型是<code>null</code>，并且默认带有一个<code>url</code>对象，这个对象可扩展，它的属性都是可写，可配置，可枚举的<br>toc: true<br>tag: ‘JavaScript’<br>categories:</p>
+<ul>
+<li>前端</li>
+<li>JavaScript</li>
+</ul>
+<hr>
+<h2 id="import-meta"><a href="#import-meta" class="headerlink" title="import.meta"></a>import.meta</h2><p><code>import.meta</code>是一个给JavaScript模块暴露特定上下文的元数据属性的对象。有ECMAScript实现，原型是<code>null</code>，并且默认带有一个<code>url</code>对象，这个对象可扩展，它的属性都是可写，可配置，可枚举的</p>
+<pre><code class="html">&lt;script type=&quot;module&quot; src=&quot;./index.js&quot;&gt;&lt;/script&gt; // 必须是module
+</code></pre>
+<pre><code class="js">console.log(import.meta); // {url: &#39;http://127.0.0.1:5500/index.js&#39;}
+</code></pre>

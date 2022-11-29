@@ -1,0 +1,33 @@
+<hr>
+<p>title: 防抖和节流<br>excerpt: JS防抖和节流的实现<br>toc: true<br>tag: ‘JavaScript’<br>categories:</p>
+<ul>
+<li>前端</li>
+<li>JavaScript</li>
+</ul>
+<hr>
+<h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p><strong>所谓防抖，就是指触发事件后 n 秒后才执行函数，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。</strong></p>
+<pre><code class="js">const debounce = (fn, wait) =&gt; {
+    let timer = 0;
+    return (args) =&gt; {
+        if(timer) window.clearTimeout(timer);
+
+        timer = window.setTimeout(() =&gt; {
+            fn(args);
+        }, wait)
+    }
+}
+</code></pre>
+<h2 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h2><p><strong>所谓节流，就是指连续触发事件但是在 n 秒中只执行一次函数。</strong> 节流会稀释函数的执行频率。</p>
+<pre><code class="js">const throttle = (fn, wait) =&gt; {
+    let timer = 0;
+
+    return (args) =&gt; {
+        if(timer) return;
+
+        timer = window.setTimeout(() =&gt; {
+            fn(args);
+            timer = 0;
+        }, wait)
+    }
+}
+</code></pre>

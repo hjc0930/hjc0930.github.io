@@ -1,0 +1,538 @@
+<hr>
+<p>title: JavaScript类机制<br>excerpt: JavaScript类机制<br>toc: true<br>tag: ‘JavaScript’<br>categories:</p>
+<ul>
+<li>前端</li>
+<li>JavaScript</li>
+</ul>
+<hr>
+<h2 id="1-ES5-继承"><a href="#1-ES5-继承" class="headerlink" title="1.ES5 继承"></a>1.ES5 继承</h2><p>ES5中没有类的概念，通常通过声明一个构造函数来模拟类</p>
+<pre><code class="js">function Person(name) {
+  this.name = name;
+  this.sayName1 = function () {
+    console.log(this.name + &#39;在工作&#39;);
+  }
+}
+
+// 原型链上的方法和属性会被多个实例共享，构造函数中的则不会
+Person.prototype.sayName2 = function () {
+  console.log(this.name + &#39;在学习&#39;);
+}
+// 静态方法
+Person.sayName3 = () =&gt; {
+    console.log(this.name + &#39;在运动&#39;)
+}
+
+var person = new Person(&#39;Tom&#39;);
+
+person.sayName1(); // Tom在工作
+person.sayName2(); // Tom在学习
+</code></pre>
+<p>原型方法和实例方法的区别：</p>
+<ul>
+<li><p>写在原型中的方法可以被所有的实例共享， 实例化的时候不会在实例内存中再复制一份，占有的内存消耗少。</p>
+</li>
+<li><p>js中每个函数都有一个prototype属性，这个属性指向一个对象（所有属性的集合：默认constructor属性，值指向这个函数本身。）</p>
+</li>
+<li><p>每个原型对象都属于对象，所以它也有自己的原型，而它自己的原型对象又有自己的原型，所以就形成了原型链。</p>
+</li>
+<li><p>一个对象的隐式原型指向构造这个对象的构造函数的显式原型，所以这个对象可以访问构造函数的属性和方法。（new一个实例）</p>
+</li>
+<li><p>js的继承也就是通过原型链来实现的，当访问一个对象的属性，如果这个对象本身不存在，则沿着__proto__依次往上查找，如果有则返回值，没有则一直到查到Object.prototype的__proto__的值为null.</p>
+</li>
+</ul>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>ES5实现继承的方式有原型链继承，构造继承，实例继承，拷贝继承，组合继承，寄生组合继承这六种</p>
+<p><strong>原型链继承</strong></p>
+<ul>
+<li>优点<ul>
+<li>实例是子类的实例，也是父类的实例</li>
+<li>可以调用父类的实例属性和方法，也可以调用父类原型链上的属性和方法</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>子类无法在构造器中新增属性或者方法，必须要在<code>new Person()</code>之后</li>
+<li>在子类实例化时，无法向父类传参</li>
+<li>父类原型对象的所有属性被所有实例共享</li>
+</ul>
+</li>
+</ul>
+<pre><code class="js">// 原型链继承
+function Cat() { }
+Cat.prototype = new Person(&#39;Pt&#39;); // 只能在这里向父类传参，或者下面代码那样
+
+var cat = new Cat();
+
+cat.sayName1();
+</code></pre>
+<h3 id="构造继承"><a href="#构造继承" class="headerlink" title="构造继承"></a>构造继承</h3><ul>
+<li>优点<ul>
+<li>解决了<code>原型链继承</code>中，子类实例共享父类引用属性的问题</li>
+<li>在创建子类实例时，可以向父类传参</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>实例并不是父类的实例，只是子类的实例</li>
+<li>只能继承父类构造函数中的属性和方法，不能继承父类原型链中的属性和方法</li>
+<li>无法实现函数的复用，每个子类都有父类实例函数的副本，影响性能</li>
+</ul>
+</li>
+</ul>
+<pre><code class="js">function Cat(name) {
+  Person.call(this, name);
+}
+
+var cat = new Cat(&#39;Tom&#39;);
+
+cat.sayName1();
+</code></pre>
+<h3 id="实例继承"><a href="#实例继承" class="headerlink" title="实例继承"></a>实例继承</h3><ul>
+<li>缺点<ul>
+<li>无法实现多继承</li>
+<li>子类实例化出来的对象是父类类型，不是子类类型</li>
+</ul>
+</li>
+</ul>
+<pre><code class="js">// 实例继承
+function Cat(name) {
+  var instance = new Person(name);
+  return instance;
+}
+
+var cat = new Cat(&#39;Tom&#39;);
+
+cat.sayName1()
+</code></pre>
+<h3 id="组合继承"><a href="#组合继承" class="headerlink" title="组合继承"></a>组合继承</h3><ul>
+<li>优点<ul>
+<li>弥补了<code>构造继承</code>的缺陷，可以继承实例的属性/方法，也可以继承原型上的属性/方法</li>
+<li>既是子类的实例，也是父类的实例</li>
+<li>可以向父类传参</li>
+<li>函数可以复用</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>调用了两次父类的构造函数，生成了两份实例</li>
+</ul>
+</li>
+</ul>
+<pre><code class="js">function Cat(name, age) {
+  Person.call(this, name);
+  this.age = age;
+}
+
+Cat.prototype = new Person();
+
+
+
+var cat = new Cat(&#39;Tom&#39;, 18);
+
+console.log(cat.name);
+
+cat.sayName1();
+cat.sayName2();
+
+console.log(cat.age);
+</code></pre>
+<h3 id="寄生组合继承"><a href="#寄生组合继承" class="headerlink" title="寄生组合继承"></a>寄生组合继承</h3><pre><code class="js">function Cat(name) {
+  Person.call(this, name);
+}
+
+var Temp = Object.create(Person.prototype); // 创建对象，创建父类原型的一个副本
+Temp.constructor = Cat;  // 增强对象，弥补因重写原型而失去的默认的constructor 属性
+Cat.prototype = Temp; // 指定对象，将新创建的对象赋值给子类的原型
+
+var cat = new Cat(&#39;Tom&#39;);
+
+cat.sayName1()
+</code></pre>
+<h2 id="2-new的时候都做了什么？"><a href="#2-new的时候都做了什么？" class="headerlink" title="2.new的时候都做了什么？"></a>2.new的时候都做了什么？</h2><ul>
+<li>创建一个新对象</li>
+<li>把这个新对象的<code>__proto__</code>属性指向你要new 的那个对象的<code>prototype</code></li>
+<li>让构造函数里面的<code>this</code>指向新的对象，然后执行构造函数</li>
+<li>返回这个新对象</li>
+</ul>
+<pre><code class="js">function _new(constructor, ...args) {
+    const obj = Object.create(constructor.prototype);
+    const result = constructor.call(obj, ...args);
+
+    return result instanceof Object ? result : obj;
+}
+</code></pre>
+<h2 id="3-ES6-Class"><a href="#3-ES6-Class" class="headerlink" title="3.ES6 Class"></a>3.ES6 Class</h2><p>ES6提供了更接近传统的写法，基本上可以看作只是一个语法糖，它的绝大部分功能，ES5都可以做到</p>
+<pre><code class="js">class Person {
+    constructor(name) {
+        this.name = name;
+    }
+    sayName() {
+        console.log(this.name + &#39;在学习&#39;)
+    }
+}
+
+const p = new Person(&#39;jiacheng&#39;)
+</code></pre>
+<p>构造函数上的<code>prototype</code>属性，在ES6类上面继续存在，事实上，类的所有方法都是定义在类的<code>prototype</code>属性上面的</p>
+<pre><code class="js">class Point {
+  constructor() {
+    // ...
+  }
+
+  toString() {
+    // ...
+  }
+
+  toValue() {
+    // ...
+  }
+}
+
+// 等同于
+Point.prototype = {
+  constructor() {},
+  toString() {},
+  toValue() {},
+};
+</code></pre>
+<p>因此，在类的实例上面调用方法，其实就是调用原型上的方法</p>
+<pre><code class="js">class B{}
+
+const b = new B();
+
+b.constructor === B.prototype.constructor // true
+</code></pre>
+<p>所以，使用<code>Object.assin()</code>方法可以很方便地一次向类添加多个方法</p>
+<pre><code class="js">class Point {
+  constructor(){
+    // ...
+  }
+}
+
+Object.assign(Point.prototype, {
+  toString(){},
+  toValue(){}
+});
+</code></pre>
+<p><code>prototype</code>对象的<code>constructor</code>属性，直接指向类本身，这与ES5的行为是一致的</p>
+<pre><code class="js">Point.prototype.constructor === Point // true
+</code></pre>
+<p>另外，类内部所有定义的方法，都是不可枚举的</p>
+<pre><code class="js">class Point {
+  constructor(x, y) {
+    // ...
+  }
+
+  toString() {
+    // ...
+  }
+}
+
+Object.keys(Point.prototype)
+// []
+Object.getOwnPropertyNames(Point.prototype)
+// [&quot;constructor&quot;,&quot;toString&quot;]
+</code></pre>
+<h3 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor"></a>constructor</h3><p><code>constructor</code>方法是类的默认方法，通过<code>new</code>命令生成对象实例时，自动调用该方法，一个类即使没有显示定义<code>constructor</code>，也会被默认添加一个空的<code>constructor</code></p>
+<pre><code class="js">class Person{}
+
+// 相当于
+class Person {
+    constructor(){}
+}
+</code></pre>
+<p><code>constructor</code>默认返回实例对象，完全可以指定返回另一个对象</p>
+<pre><code class="js">class Person {
+    constructor() {
+        return Object.create(null)
+    }
+}
+
+new Person instanceof Person // false
+</code></pre>
+<p>类必须使用<code>new</code>调用，否则会直接报错</p>
+<pre><code class="js">class Person {
+}
+
+Person()
+// TypeError: Class constructor Foo cannot be invoked without &#39;new&#39;
+</code></pre>
+<h3 id="类的实例"><a href="#类的实例" class="headerlink" title="类的实例"></a>类的实例</h3><p>直接通过<code>new</code>命令生成一个类的实例，与ES5不同的是，直接调用类会报错</p>
+<pre><code class="js">class Point {
+  // ...
+}
+
+// 报错
+var point = Point(2, 3);
+
+// 正确
+var point = new Point(2, 3);
+</code></pre>
+<p>与 ES5 一样，实例的属性除非显式定义在其本身（即定义在<code>this</code>对象上），否则都是定义在原型上（即定义在<code>class</code>上）</p>
+<pre><code class="js">//定义类
+class Point {
+
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  toString() {
+    return &#39;(&#39; + this.x + &#39;, &#39; + this.y + &#39;)&#39;;
+  }
+
+}
+
+var point = new Point(2, 3);
+
+point.toString() // (2, 3)
+
+point.hasOwnProperty(&#39;x&#39;) // true
+point.hasOwnProperty(&#39;y&#39;) // true
+point.hasOwnProperty(&#39;toString&#39;) // false
+point.__proto__.hasOwnProperty(&#39;toString&#39;) // true
+</code></pre>
+<p>类的所有实例共享一个原型对象</p>
+<pre><code class="js">var p1 = new Point(2,3);
+var p2 = new Point(3,2);
+
+//true
+p1.__proto__ === p2.__proto__
+</code></pre>
+<p>这也意味着，可以通过实例的<code>__proto__</code>属性为“类”添加方法。</p>
+<blockquote>
+<p><code>__proto__</code> 并不是语言本身的特性，这是各大厂商具体实现时添加的私有属性，虽然目前很多现代浏览器的 JS 引擎中都提供了这个私有属性，但依旧不建议在生产中使用该属性，避免对环境产生依赖。生产环境中，我们可以使用 <code>Object.getPrototypeOf</code> 方法来获取实例对象的原型，然后再来为原型添加方法/属性。</p>
+</blockquote>
+<pre><code class="javascript">var p1 = new Point(2,3);
+var p2 = new Point(3,2);
+
+p1.__proto__.printName = function () { return &#39;Oops&#39; };
+
+p1.printName() // &quot;Oops&quot;
+p2.printName() // &quot;Oops&quot;
+
+var p3 = new Point(4,2);
+p3.printName() // &quot;Oops&quot;
+</code></pre>
+<p>上面代码在<code>p1</code>的原型上添加了一个<code>printName()</code>方法，由于<code>p1</code>的原型就是<code>p2</code>的原型，因此<code>p2</code>也可以调用这个方法。而且，此后新建的实例<code>p3</code>也可以调用这个方法。这意味着，使用实例的<code>__proto__</code>属性改写原型，必须相当谨慎，不推荐使用，因为这会改变“类”的原始定义，影响到所有实例。</p>
+<h3 id="getter和setter"><a href="#getter和setter" class="headerlink" title="getter和setter"></a>getter和setter</h3><p>与 ES5 一样，在“类”的内部可以使用<code>get</code>和<code>set</code>关键字，对某个属性设置存值函数和取值函数，拦截该属性的存取行为。</p>
+<pre><code class="javascript">class MyClass {
+  constructor() {
+    // ...
+  }
+  get prop() {
+    return &#39;getter&#39;;
+  }
+  set prop(value) {
+    console.log(&#39;setter: &#39;+value);
+  }
+}
+
+let inst = new MyClass();
+
+inst.prop = 123;
+// setter: 123
+
+inst.prop
+// &#39;getter&#39;
+</code></pre>
+<p>存值函数和取值函数是设置在属性的 Descriptor 对象上的。</p>
+<pre><code class="javascript">class CustomHTMLElement {
+  constructor(element) {
+    this.element = element;
+  }
+
+  get html() {
+    return this.element.innerHTML;
+  }
+
+  set html(value) {
+    this.element.innerHTML = value;
+  }
+}
+
+var descriptor = Object.getOwnPropertyDescriptor(
+  CustomHTMLElement.prototype, &quot;html&quot;
+);
+
+&quot;get&quot; in descriptor  // true
+&quot;set&quot; in descriptor  // true
+</code></pre>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ul>
+<li><p>严格模式</p>
+<p>类和模块的内部，默认就是严格模式，不需要使用’use strict’指定运行模式</p>
+</li>
+<li><p>不存在提升</p>
+<p>类不存在变量提升</p>
+</li>
+<li><p>Generator方法</p>
+<p>如果某个方法前加上<code>*</code>，就表示该方法是一个<code>Generator</code>函数</p>
+<pre><code class="javascript">class Foo {
+  constructor(...args) {
+    this.args = args;
+  }
+  * [Symbol.iterator]() {
+    for (let arg of this.args) {
+      yield arg;
+    }
+  }
+}
+
+for (let x of new Foo(&#39;hello&#39;, &#39;world&#39;)) {
+  console.log(x);
+}
+// hello
+// world
+</code></pre>
+<p>上面代码中，<code>Foo</code>类的<code>Symbol.iterator</code>方法前有一个星号，表示该方法是一个 Generator 函数。<code>Symbol.iterator</code>方法返回一个<code>Foo</code>类的默认遍历器，<code>for...of</code>循环会自动调用这个遍历器。</p>
+</li>
+<li><p>this的指向</p>
+<p>类方法内部如果含有<code>this</code>，它默认指向类的实例，但该方法无法单独使用</p>
+<pre><code class="js">class Logger {
+  printName(name = &#39;there&#39;) {
+    this.print(`Hello ${name}`);
+  }
+
+  print(text) {
+    console.log(text);
+  }
+}
+
+const logger = new Logger();
+const { printName } = logger;
+printName(); // TypeError: Cannot read property &#39;print&#39; of undefined
+</code></pre>
+<p>上面代码中，因为<code>printName</code>方法中的<code>this</code>，默认指向<code>Logger</code>类的实例，但如果将这个方法单独提取出来使用，<code>this</code>会指向该方法运行时所在的环境，而由于<code>class</code>内部是严格模式，所以这时候<code>this</code>直接指向<code>undefined</code>，导致报错</p>
+<p>解决方法：</p>
+<ul>
+<li>在构造方法中绑定<code>this</code>，这样就不会找不到<code>print</code>方法了。</li>
+</ul>
+<pre><code class="js">class Logger {
+  constructor() {
+    this.printName = this.printName.bind(this);
+  }
+
+  printName(name = &#39;there&#39;) {
+    this.print(`Hello ${name}`);
+  }
+
+  print(text) {
+    console.log(text);
+  }
+}
+</code></pre>
+<ul>
+<li><p>使用箭头函数</p>
+<p>箭头函数内部的<code>this</code>总是指向定义时所在的对象。上面代码中，箭头函数位于构造函数内部，它的定义生效的时候，是在构造函数执行的时候。这时，箭头函数所在的运行环境，肯定是实例对象，所以<code>this</code>会总是指向实例对象</p>
+</li>
+</ul>
+<pre><code class="js">class Person {
+  printName = () =&gt; {
+    this.print()
+  }
+
+  print() {
+    console.log(&#39;111&#39;);
+  }
+}
+
+var p = new Person();
+
+var { printName } = p;
+
+printName()
+</code></pre>
+</li>
+</ul>
+<h3 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h3><p>类相当于实例的原型，所有在类中定义的方法，都会被实例继承，如果在一个方法前面加上<code>static</code>关键字，就表示该方法不会被实例继承，而是通过类来调用，这被称为<code>静态方法</code></p>
+<pre><code class="js">class Foo {
+  static classMethod() {
+    return &#39;hello&#39;;
+  }
+}
+
+Foo.classMethod() // &#39;hello&#39;
+
+var foo = new Foo();
+foo.classMethod()
+// TypeError: foo.classMethod is not a function
+</code></pre>
+<ul>
+<li>如果静态方法中包含this关键字，这个this指向的是类，而不是实例</li>
+</ul>
+<pre><code class="js">class Foo {
+  static bar() {
+    this.baz();
+  }
+  static baz() {
+    console.log(&#39;hello&#39;);
+  }
+  baz() {
+    console.log(&#39;world&#39;);
+  }
+}
+
+Foo.bar() // hello
+</code></pre>
+<ul>
+<li><p>父类的静态方法，可以被子类继承</p>
+</li>
+<li><p>静态方法也可以从<code>super</code>对象上调用</p>
+</li>
+</ul>
+<pre><code class="js">class Foo {
+  static classMethod() {
+    return &#39;hello&#39;;
+  }
+}
+
+class Bar extends Foo {
+  static classMethod() {
+    return super.classMethod() + &#39;, too&#39;;
+  }
+}
+
+Bar.classMethod() // &quot;hello, too&quot;
+</code></pre>
+<h3 id="静态属性"><a href="#静态属性" class="headerlink" title="静态属性"></a>静态属性</h3><p>静态属性是指class本身的属性，而不是定义在实例对象上的属性</p>
+<pre><code class="js">class Foo {
+
+}
+
+Foo.prop = 1;
+
+// 或者
+class Foo{
+    static name = &#39;jiacheng&#39;
+}
+
+Foo.name; // jiacheng
+</code></pre>
+<h2 id="4-继承"><a href="#4-继承" class="headerlink" title="4.继承"></a>4.继承</h2><p>class通过<code>extends</code>关键字来实现继承</p>
+<pre><code class="js">class Person{}
+
+class ColorPoint extends Person {}
+</code></pre>
+<ul>
+<li><p>super</p>
+<p>super关键字表示父类的构造函数，用来新建父类的<code>this</code>对象</p>
+<p>子类必须在<code>constructor</code>中调用<code>super</code>方法，否则会报错</p>
+</li>
+</ul>
+<pre><code class="js">class ColorPoint extends Point {
+  constructor(x, y, color) {
+    super(x, y); // 调用父类的constructor(x, y)
+    this.color = color;
+  }
+
+  toString() {
+    return this.color + &#39; &#39; + super.toString(); // 调用父类的toString()
+  }
+}
+</code></pre>
+<h2 id="5-和ES5继承的区别"><a href="#5-和ES5继承的区别" class="headerlink" title="5.和ES5继承的区别"></a>5.和ES5继承的区别</h2><ul>
+<li><p>ES5里的构造函数是一个普通函数，可以使用new调用，也可以直接调用，且存在变量提升。ES6的class必须使用new操作符调用，且不存在变量提升</p>
+</li>
+<li><p>ES5子类的原型是指向<code>Function.prototype</code>，而ES6子类的原型是指向父类的</p>
+</li>
+<li><p>ES5的原型方法和静态方法是可枚举的，而class的默认不可枚举，但可以使用<code>Object.getOwnPropertyNames</code>方法获取</p>
+</li>
+<li><p>ES5的继承，实质是先创造一个子类实例对象的<code>this</code>，然后再执行父类构造函数给它添加实例方法和属性(不执行也无所谓)；ES6的继承机制则相反，先将父类的属性和方法，加到一个空对象上，然后再将该对象作为子类的实例，即”继承在前，实例在后”</p>
+</li>
+</ul>

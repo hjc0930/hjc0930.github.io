@@ -1,0 +1,66 @@
+<hr>
+<p>title: 闭包<br>excerpt: 一个函数可以访问另一个函数内部变量，这个函数就是闭包，闭包的本质是作用域的延申<br>toc: true<br>tag: ‘JavaScript’<br>categories:</p>
+<ul>
+<li>前端</li>
+<li>JavaScript</li>
+</ul>
+<hr>
+<h2 id="1-作用域"><a href="#1-作用域" class="headerlink" title="1.作用域"></a>1.作用域</h2><blockquote>
+<p>在JavaScript中，变量的可访问性由作用域管理。作用域由函数或代码块创建。变量只能在定义它的函数或代码块内使用。超出范围则不可访问</p>
+</blockquote>
+<h3 id="变量隔离"><a href="#变量隔离" class="headerlink" title="变量隔离"></a>变量隔离</h3><blockquote>
+<p>我们可以把作用域理解为一种空间策略，每个函数拥有自己的私有作用域，它对变量进行了隔离，控制了变量的可访问性，因此不同的作用域可以具有相同名称的变量而不冲突。</p>
+</blockquote>
+<h3 id="作用域嵌套"><a href="#作用域嵌套" class="headerlink" title="作用域嵌套"></a>作用域嵌套</h3><blockquote>
+<p>我们可以把<code>innerFunc()</code>嵌套在外部函数<code>outerFunc()</code>中，外部作用域中的<code>outerVar</code>变量在内部作用域中是可访问的。</p>
+</blockquote>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ol>
+<li>作用域可以嵌套</li>
+<li>外部作用域的变量可以在内部作用域内部访问</li>
+<li>如果外部作用域中也找不到，最终会去全局作用域中查找，从内至外层层查找形成<code>作用域链</code></li>
+</ol>
+<p><strong>扩展：</strong> 我们把内部作用域可以访问到外部作用域，而外部无法访问内部的行为叫做<code>作用域继承</code>，可以把全局作用域比喻成一个大房子，里面有很多层小房间（函数作用域或者块作用域），各自拥有自己的钥匙🔑。可以从里面访问外面，但是无法从外面访问里面，并且相互之间无法访问</p>
+<h2 id="2-闭包"><a href="#2-闭包" class="headerlink" title="2.闭包"></a>2.闭包</h2><p>示例：</p>
+<pre><code class="js">function outerFunc() {
+  let outerVar = &#39;I am outside!&#39;;
+
+  function innerFunc() {
+    console.log(outerVar); // &quot;I am outside!&quot;
+  }
+
+  innerFunc();
+}
+
+outerFunc();
+</code></pre>
+<p>现在我们知道在<code>innerFunc()</code>作用域内可以从词法作用域访问变量<code>outerVar</code>，这里<code>innerFunc()</code>调用发生在其词法作用域（<code>outerFunc()</code>的作用域）内。</p>
+<p>把<code>innerFunc()</code>修改到其词法作用域之外（<code>outerFunc()</code>之外）调用。<code>innerFunc()</code>还能访问<code>outerVar</code>吗？</p>
+<p>让我们对代码片段进行调整：</p>
+<pre><code class="js">function outerFunc() {
+  let outerVar = &#39;I am outside!&#39;;
+
+  function innerFunc() {
+    console.log(outerVar); // &quot;I am outside!&quot;
+  }
+
+  return innerFunc;
+}
+
+const myInnerFunc = outerFunc();
+myInnerFunc();
+</code></pre>
+<p>现在<code>innerFunc()</code>在其词法作用域之外执行，但是<code>innerFunc()</code>仍然可以从其词法作用域访问<code>outerVar</code>，即使是在词法作用域之外执行。也就是说<code>innerFunc()</code>从其词法作用域捕获(又称记忆）变量<code>outerVar</code>。</p>
+<p>换句话说，<code>innerFunc()</code>是一个闭包，因为它在词法作用域内捕获了变量<code>outerVar</code>。</p>
+<p>正常来说，当<code>outerFunc</code>函数执行完毕之后，其作用域是会被销毁的，然后垃圾回收器会释放那段内存空间。而闭包却很神奇的将<code>outerFunc</code>的作用域存活了下来，<code>innerFunc</code>依然持有该作用域的引用，这个引用就是闭包。</p>
+<p>闭包是一个函数，它从定义它的地方记住变量，形成一个私有的作用域，保护里边的私有变量不受外界的干扰，除了保护私有变量外，还可以存储一些内容，而不管它以后在哪里执行，所以无论通过哪种方式将内部的函数传递到所在的词法作用域以外，它都会持有对原始作用域的引用，无论在何处执行这个函数都会使用闭包。</p>
+<h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><p>某个函数在定义时的词法作用域之外的地方被调用，闭包可以使该函数极限访问定义时的词法作用域。</p>
+<p><strong>扩展</strong>：通俗地讲闭包就是在一个函数里边再定义一个函数。这个内部函数一直保持有对外部函数中作用域的访问权限(小房间一直可以有大房子的访问权限)。</p>
+<h2 id="3-闭包的作用"><a href="#3-闭包的作用" class="headerlink" title="3.闭包的作用"></a>3.闭包的作用</h2><ol>
+<li>访问其他函数内部变量</li>
+<li>保护变量不被内存回收机制回收</li>
+<li>避免全局变量被污染 方便调用上下文的局部变量 加强封装性</li>
+</ol>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h2><p>作用域决定了JavaScript中变量的可访问性。主要包括函数作用域和块作用域。</p>
+<p>词法作用域允许函数作用域从外部作用域静态访问变量。</p>
+<p>最后，闭包是从其词法作用域捕获变量的函数。用简单的话来说，闭包会记住从定义它的地方开始的变量，无论它在哪里执行。</p>
+<p>闭包捕获事件处理程序，回调中的变量。它们用于函数式编程。</p>
