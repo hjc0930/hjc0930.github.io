@@ -621,7 +621,7 @@ shape-outside 是一个允许设置形状的 CSS 属性。它还有助于定义�
   shape-outside: circle(50%);
 }
 ```
-![image.png](/image/css随记.png)
+![image.png](/images/css随记.png)
 ## 背景混合模式
 使用 background-blend-mode 来实现元素背景的混合：
 ```css

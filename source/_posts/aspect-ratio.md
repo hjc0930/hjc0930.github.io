@@ -1,6 +1,6 @@
 ---
 title: aspect-ratio
-excerpt: CSS用来定义容器的宽高比
+excerpt: 用来定义容器的宽高比
 toc: true
 tag: CSS
 categories:

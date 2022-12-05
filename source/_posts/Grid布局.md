@@ -1,23 +1,33 @@
-## 1.什么的Grid布局
+---
+title: Grid布局
+excerpt: Grid布局则是将容器划分成"行"和"列"，产生单元格，然后指定**项目**所在的单元格，可以看作是二维布局，比Flex布局更强大
+toc: true
+tag: CSS
+categories:
+- 前端
+- CSS
+---
+
+## 1.什么是Grid布局
 **Flex**布局是轴线布局，只能指定"项目"针对轴线的位置，可以看作是**一维布局**，**Grid**布局则是将容器划分成"行"和"列"，产生单元格，然后指定**项目**所在的单元格，可以看作是**二维布局**，Grid布局远比Flex布局强大
-![image.png](images/grid1)
+![](/images/grid1.png)
 ### 常用的三种布局
 
 - 传统布局：利用position+display+float属性布局，兼容性最好，但效率低
 - FlexBox：一维布局方案，有自己的一套属性，效率高，学习成本低，兼容性强
 - Grid布局：网格布局是最强大的CSS布局方案，但是知识点较多，学习成本相对困难些，目前兼容性不如FlexBox
 ### 兼容性
-[![image.png](images/grid2)
+![](/images/grid2.png)
 ## 2.基本概念
 
 - 容器：有容器属性
 
-![image.png](images/grid3)
+![](/images/grid3.png)
 
 - 项目：有项目属性
 
-![image.png](images/grid4)
-![image.png](images/grid5)
+![](/images/grid4.png)
+![](/images/grid5.png)
 
 ## 3.容器属性
 
@@ -164,17 +174,17 @@ grid-template-areas: "a b c" "d e f" "g h i" "j";
 ```
 ### 3.4.grid-auto-flow
 规定容器中项目的排列顺序
-![image.png](images/grid6)
+![](/images/grid6.png)
 如果出现如下图位置的情况，为了充分利用空间，可以加上dense属性
-![image.png](images/grid7)
+![](/images/grid7.png)
 ### 3.5.justify-items/align-items
 设置**单元格内容**的水平和垂直的对齐方式
 ```css
 justify-items: start | end | center | stretch;
 align-items: start | end | center | stretch;
 ```
-![image.png](images/grid9)
-![image.png](images/grid10)
+![](/images/grid9.png)
+![](/images/grid10.png)
 #### place-items
 place-items属性是align-items属性和justify-items属性的合并简写
 ```css
@@ -193,7 +203,7 @@ place-content: <align-content> <justify-content>
 ```
 ### 3.7.grid-auto-columns/grid-auto-rows
  用来设置**多出来的项目**的宽和高
-![image.png](images/grid11)
+![](/images/grid11.png)
 ## 4.项目属性
 
 - grid-column-start
@@ -208,7 +218,7 @@ place-content: <align-content> <justify-content>
 - _place-self(上面两个的简写)_
 ### 4.1.grid-column-start/grid-column-end/grid-row-start/grid-row-end
 用来指定item在网格线中的开始网线和结束网线
-![image.png](images/grid12)
+![](/images/grid12.png)
 
 -  简写
 ```css
@@ -219,7 +229,7 @@ grid-row: 1 / 3
 - span写法
 
 规定项目直接占据的行/列数量
-![image.png](images/grid13)
+![](/images/grid13.png)
 ```css
 grid-column: span 3; // 跨越3列
 grid-row: span 1; // 跨越1行
@@ -229,7 +239,7 @@ grid-row: span 1; // 跨越1行
 
 - 配合容器属性`grid-template-area`使用
 
-![image.png](images/grid14)
+![](/images/grid14.png)
 
 - 用做上面四个属性的简写
 
@@ -239,7 +249,7 @@ grid-area属性可以用作grid-row-start，grid-column-start，grid-row-end，g
 grid-areaL 1 / 1 / 3 / 3;
 ```
 
-![image.png](images/grid15)
+![](/images/grid15.png)
 
 ### 4.3.justify-self/align-self
 justify-self属性用来**单独设置**单元格内容的水平位置，跟justify-items属性的用法完全一致
