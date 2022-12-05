@@ -1,8 +1,8 @@
 ---
-title: CSS笔记
-excerpt: CSS相关笔记
+title: CSS随记
+excerpt: 记录了一些CSS属性
 toc: true
-tag: 'CSS'
+tag: CSS
 categories:
 - 前端
 - CSS
@@ -582,3 +582,62 @@ text-align: center
 	    <p>我是第2个段落</p>
 	</div>
 	```
+
+
+## 毛玻璃特效
+可以使用 CSS 中的 backdrop-filter 属性来实现毛玻璃特效：backdrop-filter 属性可以为一个元素后面区域添加图形效果（如模糊或颜色偏移）。因为它适用于元素_背后_的所有元素，为了看到效果，必须使元素或其背景至少部分透明。
+```css
+.login {
+  backdrop-filter: blur(5px);
+}
+```
+## 将文本设为大写或小写
+大写或小写字母可以不必在 HTML中设置。可以在 CSS 中使用text-transform属性来强制任何文本为大写或小写。text-transform 属性专门用于控制文本的大小写，当值为uppercase时会将文本转为大写，当值为capitalize时会将文本转化为小写，当值为capitalize时会将每个单词以大写字母开头。
+```css
+/* 大写 */
+.upper {
+  text-transform: uppercase;
+}
+
+/* 小写 */
+.lower {
+  text-transform: lowercase;
+}
+```
+## 实现首字母下沉
+可以使用::first-letter来实现文本首字母的下沉：:first-letter选择器用来指定元素第一个字母的样式，它仅适用于在块级元素中。
+```css
+p.texts:first-letter {
+  font-size: 200%;
+  color: #8A2BE2;
+}
+```
+## 图片文字环绕
+shape-outside 是一个允许设置形状的 CSS 属性。它还有助于定义文本流动的区域：
+```css
+.any-shape {
+  width: 300px;
+  float: left;
+  shape-outside: circle(50%);
+}
+```
+![image.png](/image/css随记.png)
+## 背景混合模式
+使用 background-blend-mode 来实现元素背景的混合：
+```css
+.blend-1 {
+  background-image: url(https://duomly.nyc3.digitaloceanspaces.com/articles/coding/alps-lake.jpg);
+  width: 100vw;
+  height: 500px;
+  background-size: cover;
+}
+
+.blend-2 {
+  background-image: url(https://duomly.nyc3.digitaloceanspaces.com/articles/coding/alps-lake.jpg);
+  width: 100vw;
+  height: 500px;
+  background-color: #20126f;
+  background-size: cover;
+  background-blend-mode: overlay;
+}
+```

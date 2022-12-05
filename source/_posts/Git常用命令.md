@@ -1,0 +1,273 @@
+---
+title: Git常用命令
+excerpt: 总结了在工作中常用的Git命令
+toc: true
+tag: Git
+categories:
+- Git
+---
+
+## 1.Git简介
+
+Git是一个开源的分布式版本控制系统，用于敏捷高效地处理任何大小型项目
+
+Git有四个区，分别为工作区，暂存区，本地仓库和远程仓库
+
+- Workspace：工作区，就是平时写代码的地方
+- Index：暂存区，用于存放临时的改动
+- Repository：版本库，就是本地仓库，保存所有的版本数据，其中HEAD指向最新的版本
+- Remote：远程仓库，托管代码的服务器，我们可以在一些网站(GitHub，Gitee等)建立远程仓库来托管我们的代码
+
+### 工作流程
+
+**Git的工作流程一般是这样的：**
+
+1.在工作区中编写，修改代码
+
+2.通过`git add`命令将需要跟踪的文件放入暂存区
+
+3.通过`git commit`命令将暂存区中的文件存入本地仓库，此时会创建一条Git提交记录
+
+4.通过`git push`命令将本地仓库的版本推送到远程仓库保存
+
+因此，Git管理的文件一般有三种状态：`已修改（modified）`,`已暂存（staged）`,`已提交(committed)`
+
+## 2.基本命令
+
+### 1.工作区命令
+
+-  初始化仓库
+```bash
+git init
+```
+
+
+-  添加文件追踪
+通过`git add <filename>`命令可以将一个文件存入暂存区
+```bash
+git add <fileName>
+```
+
+也可以通过`git add .`命令将工作区中的文件全部存入暂存区
+
+-  查看工作区文件状态
+通过`git status`可以查看当前工作区的文件状态
+-  撤销提交
+通过`git reset`命令可以撤销存储在暂存区中的文件
+```bash
+// 撤销一个文件
+git reset <fileName>
+// 撤销所有文件
+git reset
+```
+
+
+-  删除存储库中未提交的更改
+```bash
+git reset --hard HEAD
+```
+
+
+### 2.暂存区命令
+
+-  将暂存区的文件提交到本地仓库
+```bash
+git commit -m <commitLog>
+```
+
+
+-  撤销上次的提交
+```bash
+// 撤销提交至工作区
+git reset HEAD^
+// 撤销提交至暂存区
+git reset --soft HEAD^
+```
+
+
+-  版本回滚
+```bash
+git reset --hard <logName>
+```
+
+
+### 3.本地仓库命令
+
+-  查看所有远程仓库
+```bash
+git remote -v
+```
+
+
+-  添加一个远程仓库
+```bash
+git remote add <remoteName> <remoteUrl>
+```
+
+
+-  删除一个远程仓库
+```bash
+git remote rm <remoteName>
+```
+
+
+-  修改一个远程仓库名
+```bash
+git remote rename <oldName> <newName>
+```
+
+
+-  将本地仓库代码推送到远程仓库
+```bash
+git push <remoteNmae> <branchName>
+```
+
+可以加上`-f(--force)`命令强制推送
+可以加上`-u`命令默认追踪一个分支
+
+-  克隆一个仓库到本地
+```bash
+git clone <remoteUrl>
+```
+
+
+-  更新远程仓库代码到本地仓库
+```bash
+git fetch
+```
+
+
+-  更新远程仓库代码到本地仓库并合并到工作区
+```bash
+git pull(git fetch + git merge)
+```
+
+
+## 3.分支命令
+
+-  查看本地分支
+```bash
+git branch
+```
+
+
+-  查看远程分支
+```bash
+git branch -r
+```
+
+
+-  查看所有分支
+```bash
+git branch -a
+```
+
+
+-  新建一个分支
+```bash
+git branch <branchName>
+```
+
+
+-  重命名分支
+```bash
+git branch -m oldName newName
+```
+
+
+-  切换到指定分支
+```bash
+git checkout <branchName>
+```
+
+
+-  新建并切换到该分支
+```bash
+git checkout -b <branchName>
+```
+
+
+-  删除本地分支(不能在该分支下)
+```bash
+git branch -d <branchName>
+```
+
+
+-  强制删除本地分支(不能在该分支下)
+```bash
+git branch -D <branchName>
+```
+
+
+-  删除远程分支
+```bash
+git push -d <remoteName> <branchName>
+```
+
+
+-  合并分支
+```bash
+git merge <branchName>
+```
+
+
+-  分支变基
+```bash
+git rebase <branchName>
+```
+
+
+### 1.分支变基
+
+分支变基可以将当前分支的起点变更到目标分支的终点，一般用于同分支拉取代码时的合并
+
+- 变基
+
+```bash
+git rebase <branchName>
+```
+
+- 拉取远程代码时同时变基
+
+```bash
+git pull --rebase <remoteName>/<branchName>(git fetch + git rebase <remoteName>/<branchName>)
+```
+
+**冲突解决**
+
+- 放弃合并，回退到rebase操作之前的状态，之前的提交不会丢弃
+
+```bash
+git rebase --abort
+```
+
+- 将引起冲突的commits直接丢弃(慎用)
+
+```bash
+git rebase --skip
+```
+
+-  解决冲突
+如果在拉取代码时产生冲突，我们手动解决冲突后，先执行`git add`和`git commit`命令提交冲突的文件，然后执行`git rebase --continue`命令进行分支的合并
+
+```bash
+git rebase --continue
+```
+
+- cherry-pick
+
+用于合并指定的commit到当前分支
+```bash
+git cherry-pick <commit id>
+```
+## 4.存储
+
+- git stash: 将当前工作区中所有已追踪的文件存入堆栈
+- git stash save ：将当前工作区中所有已追踪的文件存入堆栈，并可以写上备注
+- git stash save -u：将当前工作区中所有文件存入堆栈(包括未追踪文件)
+- git stash list：查询堆栈中的存储
+- git stash show：查看堆栈中最新保存的stash和当前目录的差异
+- git stash pop：将堆栈中最新的存储弹出至工作区，并且删除堆栈中对应的存储
+- git stash apply：将堆栈中最新的存储弹出至工作区，该操作不会删除堆栈中对应的存储
+- git stash drop ：移除堆栈中指定的存储
+- git stash clear：清除堆栈中的所有存储
