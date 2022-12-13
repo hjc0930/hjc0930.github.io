@@ -8,7 +8,6 @@ categories:
 - HTML
 ---
 
-
 # accept限制上传文件类型
 ```html
 <input type="file" accept="" />
