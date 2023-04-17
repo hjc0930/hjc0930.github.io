@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>前端组件化思考 - 博客</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="博客"><meta name="msapplication-TileImage" content="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="博客"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="组件化对于任何一个业务场景复杂的前端应用以及经过多次迭代之后的产品来说都是必经之路。组件化要做的不仅仅是表面上看到的模块拆分解耦，其背后还有很多工作来支撑组件化的进行，例如结合业务特性的模块拆分策略、模块间的交互方式和构建系统等等"><meta property="og:type" content="blog"><meta property="og:title" content="前端组件化思考"><meta property="og:url" content="https://hjc0930.github.io/%E5%89%8D%E7%AB%AF%E7%BB%84%E4%BB%B6%E5%8C%96%E6%80%9D%E8%80%83/"><meta property="og:site_name" content="博客"><meta property="og:description" content="组件化对于任何一个业务场景复杂的前端应用以及经过多次迭代之后的产品来说都是必经之路。组件化要做的不仅仅是表面上看到的模块拆分解耦，其背后还有很多工作来支撑组件化的进行，例如结合业务特性的模块拆分策略、模块间的交互方式和构建系统等等"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://hjc0930.github.io/img/og_image.png"><meta property="article:published_time" content="2023-04-17T14:26:53.699Z"><meta property="article:modified_time" content="2023-04-17T15:22:06.442Z"><meta property="article:author" content="hjc"><meta property="article:tag" content="前端"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://hjc0930.github.io/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://hjc0930.github.io/%E5%89%8D%E7%AB%AF%E7%BB%84%E4%BB%B6%E5%8C%96%E6%80%9D%E8%80%83/"},"headline":"前端组件化思考","image":["https://hjc0930.github.io/img/og_image.png"],"datePublished":"2023-04-17T14:26:53.699Z","dateModified":"2023-04-17T15:22:06.442Z","author":{"@type":"Person","name":"hjc"},"publisher":{"@type":"Organization","name":"博客","logo":{"@type":"ImageObject","url":"https://hjc0930.oss-cn-hangzhou.aliyuncs.com/logo.png"}},"description":"组件化对于任何一个业务场景复杂的前端应用以及经过多次迭代之后的产品来说都是必经之路。组件化要做的不仅仅是表面上看到的模块拆分解耦，其背后还有很多工作来支撑组件化的进行，例如结合业务特性的模块拆分策略、模块间的交互方式和构建系统等等"}</script><link rel="canonical" href="https://hjc0930.github.io/%E5%89%8D%E7%AB%AF%E7%BB%84%E4%BB%B6%E5%8C%96%E6%80%9D%E8%80%83/"><link rel="icon" href="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/logo.png" alt="博客" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-17T14:26:53.699Z" title="2023/4/17 22:26:53">2023-04-17</time>发表</span><span class="level-item"><time dateTime="2023-04-17T15:22:06.442Z" title="2023/4/17 23:22:06">2023-04-17</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span> / </span><a class="link-muted" href="/categories/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/">框架</a></span><span class="level-item">15 分钟读完 (大约2212个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">前端组件化思考</h1><div class="content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>组件化对于任何一个业务场景复杂的前端应用以及经过多次迭代之后的产品来说都是必经之路。组件化要做的不仅仅是表面上看到的模块拆分解耦，其背后还有很多工作来支撑组件化的进行，例如结合业务特性的模块拆分策略、模块间的交互方式和构建系统等等</p>
+<p>组件化并不是前端独有的，当今前端生态里面，React、Angular和Vue三分天下。虽然这三个框架的定位各有不同，但是它们有一个核心的共同点，那就是提供了组件化的能力。</p>
+<h2 id="前端实施组件化的目的"><a href="#前端实施组件化的目的" class="headerlink" title="前端实施组件化的目的"></a>前端实施组件化的目的</h2><ul>
+<li><p>从发展的角度来看</p>
+<ul>
+<li><p>随着技术的发展，开发的复杂度也越来越高，传统开发模式总是存在着开发效率低，维护成本高等弊端</p>
+</li>
+<li><p>传统开发方式效率低以及维护成本高的主要原因在于很多时候是将一个系统做成了整块应用，而且往往随着业务的增长或者变更，系统的复杂度会呈现指数级的增长，经常出现的情况就是一个小小的改动或者一个小功能的增加可能会引起整体逻辑的修改，造成牵一发而动全身</p>
+</li>
+<li><p>我们希望一个大且复杂的场景能够被分解成几个小的部分，这些小的部分彼此之间互不干扰，可以单独开发，单独维护，而且他们之间可以随意的进行组合</p>
+</li>
+</ul>
+</li>
+<li><p>从效率的角度思考</p>
+<ul>
+<li><p> 迭代速度慢，公共代码相互耦合，需要全量回归</p>
+</li>
+<li><p>多人协作是极其困难的一件事</p>
+</li>
+<li><p>代码冲突多，每次提交代码可能需要解决冲突</p>
+</li>
+<li><p>版本风险高，修改会影响很多需求之外的功能</p>
+</li>
+</ul>
+</li>
+<li><p>从技术的角度思考</p>
+<ul>
+<li><p>代码整体结构混乱、缺少层次</p>
+</li>
+<li><p>优秀的代码应该是高内聚，低耦合</p>
+</li>
+<li><p>龟速编译，开发体验极差</p>
+</li>
+<li><p>无法很好地支持A/BTest</p>
+</li>
+<li><p>每次发版在QA回归上耗时很久</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="什么是组件化"><a href="#什么是组件化" class="headerlink" title="什么是组件化"></a>什么是组件化</h2><p>前端的组件化，其实是对项目进行自上而下的拆分，把通用的、可复用的功能以黑盒的形式封装到一个组件中，然后暴露一些开箱即用的函数和属性配置供外部组件调用，实现与业务逻辑的解耦，来达到代码间的高内聚、低耦合，实现功能模块的可配置、可复用、可扩展。</p>
+<h2 id="组件化的演变"><a href="#组件化的演变" class="headerlink" title="组件化的演变"></a>组件化的演变</h2><p>组件化经历了：<code>函数化编程思想</code>、<code>模块化编程思想</code>和<code>组件化编程思想</code>三个阶段</p>
+<ul>
+<li><p>函数化编程思想：</p>
+<ul>
+<li>以函数(方法)来分离行为</li>
+<li>每一个函数仅在做一件事情</li>
+</ul>
+</li>
+<li><p>模块化编程思想：</p>
+<ul>
+<li>以模块(js文件)来分离行为</li>
+<li>每个模块负责一类事情</li>
+</ul>
+</li>
+<li><p>组件化编程思想：</p>
+<ul>
+<li>以组件来分离行为</li>
+<li>每个组件拥有独立的结构、视图和行为，代表一个完整的个体</li>
+</ul>
+</li>
+</ul>
+<h2 id="组件的职能划分"><a href="#组件的职能划分" class="headerlink" title="组件的职能划分"></a>组件的职能划分</h2><p>组件最大的不稳定性来自于展现层，一个组件只做一件事，基于功能做好职责划分：</p>
+<ul>
+<li><p>基础组件</p>
+</li>
+<li><p>容器型组件</p>
+</li>
+<li><p>展示型组件</p>
+</li>
+<li><p>业务组件</p>
+</li>
+<li><p>通用组件</p>
+</li>
+</ul>
+<h3 id="容器型组件"><a href="#容器型组件" class="headerlink" title="容器型组件"></a>容器型组件</h3><p>一个容器性质的组件，一般当作一个业务子模块的入口，比如一个路由指向的组件；容器型组件需要知道如何获取子组件所需数据，以及这些数据的处理逻辑，并把数据和逻辑通过props提供给子组件使用。容器型组件一般是<strong>有状态组件</strong>，因为它们需要管理页面所需数据。</p>
+<h3 id="展示型组件"><a href="#展示型组件" class="headerlink" title="展示型组件"></a>展示型组件</h3><p>主要表现为组件是怎样渲染的，就像一个简单的模版渲染；</p>
+<ul>
+<li><p>只通过props接受数据和回调函数，不充当数据源；</p>
+</li>
+<li><p>通常用props.children(react) 或者slot(vue)来包含其他组件；</p>
+</li>
+<li><p>可以有状态，在其生命周期内可以操纵并改变其内部状态，职责单一，将不属于自己的行为通过回调传递出去，让父级去处理。</p>
+</li>
+</ul>
+<h3 id="业务组件"><a href="#业务组件" class="headerlink" title="业务组件"></a>业务组件</h3><p>通常是根据最小业务状态抽象而出，业务组件虽然也具有一定的复用性，但大多数是一次性组件</p>
+<h3 id="通用组件"><a href="#通用组件" class="headerlink" title="通用组件"></a>通用组件</h3><p>可以在一个或多个项目内通用的组件</p>
+<h3 id="组件化在现代项目中的职责"><a href="#组件化在现代项目中的职责" class="headerlink" title="组件化在现代项目中的职责"></a>组件化在现代项目中的职责</h3><p>组件化开发方案主要关注的是在迭代开发阶段的对团队效率的提升。</p>
+<h4 id="1-单一职责"><a href="#1-单一职责" class="headerlink" title="1.单一职责"></a>1.单一职责</h4><ol>
+<li><p>单一职责强调一个组件具备一项“能力”。</p>
+</li>
+<li><p>单一职责可以保证组件是最细的粒度，且有利于复用。但太细的粒度有时又会造成组件的碎片化。因此单一职责组件要建立在可复用的基础上，对于不可复用的单一职责组件，我们仅仅作为独立组件的内部组件即可。</p>
+</li>
+<li><p>单一职责同时也具备简化组件的能力，遵守该原则在一定程度上能够使代码足够简单，意味着易读、易维护。</p>
+</li>
+</ol>
+<h4 id="2-封装"><a href="#2-封装" class="headerlink" title="2.封装"></a>2.封装</h4><ol>
+<li><p>良好的组件封装应该隐藏内部细节和实现意义，并通过props来控制行为和输出。同时还要具备减少访问全局变量能力，因为访问全局变量会打破封装，创造了不可预测的行为。</p>
+</li>
+<li><p>封装能够将不用逻辑代码分离，能够帮助开发中快速定位问题。</p>
+</li>
+</ol>
+<h4 id="3-可配置性"><a href="#3-可配置性" class="headerlink" title="3.可配置性"></a>3.可配置性</h4><ol>
+<li><p>一个组件，要明确它的输入和输出分别是什么。</p>
+</li>
+<li><p>组件除了要展示默认的内容，还需要做一些动态的适配，比如：一个组件内有一段文本，一个图片和一个按钮；字体的颜色、图片的规则、按钮的位置、按钮点击事件的处理逻辑等，都是可以做成可配置的。</p>
+</li>
+</ol>
+<h4 id="4-组合"><a href="#4-组合" class="headerlink" title="4.组合"></a>4.组合</h4><ol>
+<li><p>单一责任原则描述了如何将需求拆分为组件，封装描述了如何组织这些组件，组合描述了如何将整个系统粘合在一起；</p>
+</li>
+<li><p>具有多个功能的组件，应该转换为多个单一职责的小组件，这些小的组件又可以组合成为一个职责更大、功能单一的组件。</p>
+</li>
+</ol>
+<h4 id="5-复用"><a href="#5-复用" class="headerlink" title="5.复用"></a>5.复用</h4><ol>
+<li>通常来说我们进行组件设计的目的有两种：</li>
+</ol>
+<ul>
+<li><p>抽取公共功能部分，方便复用；</p>
+</li>
+<li><p>复杂设计/功能分解，便于代码管理和提高代码阅读性。</p>
+</li>
+</ul>
+<ol start="2">
+<li>提高组件的复用性，使得一处代码的封装能够在各个不同的地方使用。复用性能够使代码的修改/编辑更加方便，只需要修改组件代码，各个引用的地方会同步进行修改和更新。</li>
+</ol>
+<h4 id="6-可测试"><a href="#6-可测试" class="headerlink" title="6.可测试"></a>6.可测试</h4><ol>
+<li><p>现在前端开发过程中一直都在强调单元测试，一个完成的项目单测是不可缺少的一部分，单测可以保证代码正确性、一部分依赖的正确性、以及减少调试时间等。</p>
+</li>
+<li><p>单元测试的目的不是为了减少代码覆盖率，而是为了减少bug出现的概率，以及防止bug回归。</p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>组件化并非一蹴而就，而是一个持续的过程。在沉淀业务组件的同时还需考虑组件包的大小，不能因为组件包的体积大而导致页面加载过慢，以及组件发布前的测试等。但可以通过一些方法和规范去解决挑战，让组件化设计更好的服务于系统。所以，理解组件化可以帮助开发者更好地使用框架进行工作内容的拆分和维护，才能在实际开发中结合具体的业务场景，设计出合理的组件，实现真正的前端组件化。</p>
+</div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/React/React%20State/"><span class="level-item">React State</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "444240781e552f1e08b7d471642bfafa",
+            repo: "hjc0930.github.io",
+            owner: "hjc0930",
+            clientID: "71e6b24166456f7acaed",
+            clientSecret: "be2c12c0d0d3fb58dc9d2fced639c667268ec3f7",
+            admin: ["hjc0930"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/logo.png" alt="hjc"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">hjc</p><p class="is-size-6 is-block">一个前端程序员的 编程笔记和生活记录</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">94</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">13</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">12</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/hjc0930" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/hjc0930"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/CSS/"><span class="level-start"><span class="level-item">CSS</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Git/"><span class="level-start"><span class="level-item">Git</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/React/"><span class="level-start"><span class="level-item">React</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/nodejs/"><span class="level-start"><span class="level-item">nodejs</span></span><span class="level-end"><span class="level-item tag">19</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/"><span class="level-start"><span class="level-item">前端</span></span><span class="level-end"><span class="level-item tag">71</span></span></a><ul><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/CSS/"><span class="level-start"><span class="level-item">CSS</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/HTML/"><span class="level-start"><span class="level-item">HTML</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/"><span class="level-start"><span class="level-item">JavaScript</span></span><span class="level-end"><span class="level-item tag">30</span></span></a><ul><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/DOM/"><span class="level-start"><span class="level-item">DOM</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/React/"><span class="level-start"><span class="level-item">React</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="level-start"><span class="level-item">前端工程化</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/"><span class="level-start"><span class="level-item">框架</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><span class="level-start"><span class="level-item">设计模式</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-17T14:26:53.699Z">2023-04-17</time></p><p class="title"><a href="/%E5%89%8D%E7%AB%AF%E7%BB%84%E4%BB%B6%E5%8C%96%E6%80%9D%E8%80%83/">前端组件化思考</a></p><p class="categories"><a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a> / <a href="/categories/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/">框架</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-16T15:22:33.811Z">2023-04-16</time></p><p class="title"><a href="/React/React%20State/">React State</a></p><p class="categories"><a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a> / <a href="/categories/%E5%89%8D%E7%AB%AF/React/">React</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-12T14:55:15.580Z">2023-04-12</time></p><p class="title"><a href="/%E9%9D%A2%E8%AF%95%E5%B0%8F%E7%BB%93(20230410)%20/">面试小结（20230410）</a></p><p class="categories"><a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T07:15:36.785Z">2023-04-07</time></p><p class="title"><a href="/%E9%9D%A2%E8%AF%95%E5%B0%8F%E7%BB%93(20230407)/">面试小结（20230407）</a></p><p class="categories"><a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-06T14:13:40.277Z">2023-04-06</time></p><p class="title"><a href="/%E9%9D%A2%E8%AF%95%E5%B0%8F%E7%BB%93%EF%BC%8820230406%EF%BC%89/">面试小结（20230406）</a></p><p class="categories"><a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">94</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/CSS/"><span class="tag">CSS</span><span class="tag">12</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Chrome%E8%B0%83%E8%AF%95/"><span class="tag">Chrome调试</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Git/"><span class="tag">Git</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/HTML/"><span class="tag">HTML</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/JavaScript/"><span class="tag">JavaScript</span><span class="tag">36</span></a></div><div class="control"><a class="tags has-addons" href="/tags/React/"><span class="tag">React</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/nodejs/"><span class="tag">nodejs</span><span class="tag">19</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%89%8D%E7%AB%AF/"><span class="tag">前端</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="tag">前端工程化</span><span class="tag">7</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/"><span class="tag">浏览器</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><span class="tag">设计模式</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%9D%A2%E8%AF%95/"><span class="tag">面试</span><span class="tag">3</span></a></div></div></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li><li><a class="level is-mobile" href="https://juejin.cn/user/87601131292839/posts" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">JueJin</span></span><span class="level-right"><span class="level-item tag">juejin.cn</span></span></a></li></ul></div></div></div><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#前言"><span class="level-left"><span class="level-item">1</span><span class="level-item">前言</span></span></a></li><li><a class="level is-mobile" href="#前端实施组件化的目的"><span class="level-left"><span class="level-item">2</span><span class="level-item">前端实施组件化的目的</span></span></a></li><li><a class="level is-mobile" href="#什么是组件化"><span class="level-left"><span class="level-item">3</span><span class="level-item">什么是组件化</span></span></a></li><li><a class="level is-mobile" href="#组件化的演变"><span class="level-left"><span class="level-item">4</span><span class="level-item">组件化的演变</span></span></a></li><li><a class="level is-mobile" href="#组件的职能划分"><span class="level-left"><span class="level-item">5</span><span class="level-item">组件的职能划分</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#容器型组件"><span class="level-left"><span class="level-item">5.1</span><span class="level-item">容器型组件</span></span></a></li><li><a class="level is-mobile" href="#展示型组件"><span class="level-left"><span class="level-item">5.2</span><span class="level-item">展示型组件</span></span></a></li><li><a class="level is-mobile" href="#业务组件"><span class="level-left"><span class="level-item">5.3</span><span class="level-item">业务组件</span></span></a></li><li><a class="level is-mobile" href="#通用组件"><span class="level-left"><span class="level-item">5.4</span><span class="level-item">通用组件</span></span></a></li><li><a class="level is-mobile" href="#组件化在现代项目中的职责"><span class="level-left"><span class="level-item">5.5</span><span class="level-item">组件化在现代项目中的职责</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1-单一职责"><span class="level-left"><span class="level-item">5.5.1</span><span class="level-item">1.单一职责</span></span></a></li><li><a class="level is-mobile" href="#2-封装"><span class="level-left"><span class="level-item">5.5.2</span><span class="level-item">2.封装</span></span></a></li><li><a class="level is-mobile" href="#3-可配置性"><span class="level-left"><span class="level-item">5.5.3</span><span class="level-item">3.可配置性</span></span></a></li><li><a class="level is-mobile" href="#4-组合"><span class="level-left"><span class="level-item">5.5.4</span><span class="level-item">4.组合</span></span></a></li><li><a class="level is-mobile" href="#5-复用"><span class="level-left"><span class="level-item">5.5.5</span><span class="level-item">5.复用</span></span></a></li><li><a class="level is-mobile" href="#6-可测试"><span class="level-left"><span class="level-item">5.5.6</span><span class="level-item">6.可测试</span></span></a></li></ul></li></ul></li><li><a class="level is-mobile" href="#总结"><span class="level-left"><span class="level-item">6</span><span class="level-item">总结</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/logo.png" alt="博客" height="28"></a><p class="is-size-7"><span>&copy; 2023 hjc</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/hjc0930"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
