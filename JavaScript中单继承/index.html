@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>JavaScript中单继承 - 博客</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="博客"><meta name="msapplication-TileImage" content="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="博客"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="介绍JS继承机制，以及ES5，ES6继承的不同"><meta property="og:type" content="blog"><meta property="og:title" content="JavaScript中单继承"><meta property="og:url" content="https://hjc0930.github.io/JavaScript%E4%B8%AD%E5%8D%95%E7%BB%A7%E6%89%BF/"><meta property="og:site_name" content="博客"><meta property="og:description" content="介绍JS继承机制，以及ES5，ES6继承的不同"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://hjc0930.github.io/img/og_image.png"><meta property="article:published_time" content="2023-04-18T12:27:27.946Z"><meta property="article:modified_time" content="2023-04-18T12:28:23.907Z"><meta property="article:author" content="hjc"><meta property="article:tag" content="JavaScript"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://hjc0930.github.io/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://hjc0930.github.io/JavaScript%E4%B8%AD%E5%8D%95%E7%BB%A7%E6%89%BF/"},"headline":"JavaScript中单继承","image":["https://hjc0930.github.io/img/og_image.png"],"datePublished":"2023-04-18T12:27:27.946Z","dateModified":"2023-04-18T12:28:23.907Z","author":{"@type":"Person","name":"hjc"},"publisher":{"@type":"Organization","name":"博客","logo":{"@type":"ImageObject","url":"https://hjc0930.oss-cn-hangzhou.aliyuncs.com/logo.png"}},"description":"介绍JS继承机制，以及ES5，ES6继承的不同"}</script><link rel="canonical" href="https://hjc0930.github.io/JavaScript%E4%B8%AD%E5%8D%95%E7%BB%A7%E6%89%BF/"><link rel="icon" href="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/logo.png" alt="博客" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-04-18T12:27:27.946Z" title="2023/4/18 20:27:27">2023-04-18</time>发表</span><span class="level-item"><time dateTime="2023-04-18T12:28:23.907Z" title="2023/4/18 20:28:23">2023-04-18</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span><span class="level-item">21 分钟读完 (大约3168个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">JavaScript中单继承</h1><div class="content"><h2 id="ES5-继承"><a href="#ES5-继承" class="headerlink" title="ES5 继承"></a>ES5 继承</h2><p>ES5中没有类的概念，通常通过声明一个构造函数来模拟类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">function Person(name) &#123;</span><br><span class="line">  this.name = name;</span><br><span class="line">  this.sayName1 = function () &#123;</span><br><span class="line">    console.log(this.name + &#x27;在工作&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 原型链上的方法和属性会被多个实例共享，构造函数中的则不会</span><br><span class="line">Person.prototype.sayName2 = function () &#123;</span><br><span class="line">  console.log(this.name + &#x27;在学习&#x27;);</span><br><span class="line">&#125;</span><br><span class="line">// 静态方法</span><br><span class="line">Person.sayName3 = () =&gt; &#123;</span><br><span class="line">    console.log(this.name + &#x27;在运动&#x27;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var person = new Person(&#x27;Tom&#x27;);</span><br><span class="line"></span><br><span class="line">person.sayName1(); // Tom在工作</span><br><span class="line">person.sayName2(); // Tom在学习</span><br></pre></td></tr></table></figure>
+
+<p>原型方法和实例方法的区别：</p>
+<ul>
+<li>  写在原型中的方法可以被所有的实例共享， 实例化的时候不会在实例内存中再复制一份，占有的内存消耗少。</li>
+<li>  js中每个函数都有一个prototype属性，这个属性指向一个对象（所有属性的集合：默认constructor属性，值指向这个函数本身。）</li>
+<li>  每个原型对象都属于对象，所以它也有自己的原型，而它自己的原型对象又有自己的原型，所以就形成了原型链。</li>
+<li>  一个对象的隐式原型指向构造这个对象的构造函数的显式原型，所以这个对象可以访问构造函数的属性和方法。（new一个实例）</li>
+<li>  js的继承也就是通过原型链来实现的，当访问一个对象的属性，如果这个对象本身不存在，则沿着<strong>proto</strong>依次往上查找，如果有则返回值，没有则一直到查到Object.prototype的<strong>proto</strong>的值为null.</li>
+</ul>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>ES5实现继承的方式有原型链继承，构造继承，实例继承，拷贝继承，组合继承，寄生组合继承这六种</p>
+<p><strong>原型链继承</strong></p>
+<ul>
+<li>  优点</li>
+</ul>
+<!---->
+
+<ul>
+<li><ul>
+<li>  实例是子类的实例，也是父类的实例</li>
+<li>  可以调用父类的实例属性和方法，也可以调用父类原型链上的属性和方法</li>
+</ul>
+</li>
+</ul>
+<!---->
+
+<ul>
+<li>  缺点</li>
+</ul>
+<!---->
+
+<ul>
+<li><ul>
+<li>  子类无法在构造器中新增属性或者方法，必须要在<code>new Person()</code>之后</li>
+<li>  在子类实例化时，无法向父类传参</li>
+<li>  父类原型对象的所有属性被所有实例共享</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 原型链继承</span><br><span class="line">function Cat() &#123; &#125;</span><br><span class="line">Cat.prototype = new Person(&#x27;Pt&#x27;); // 只能在这里向父类传参，或者下面代码那样</span><br><span class="line"></span><br><span class="line">var cat = new Cat();</span><br><span class="line"></span><br><span class="line">cat.sayName1();</span><br></pre></td></tr></table></figure>
+
+<h3 id="构造继承"><a href="#构造继承" class="headerlink" title="构造继承"></a>构造继承</h3><ul>
+<li>  优点</li>
+</ul>
+<!---->
+
+<ul>
+<li><ul>
+<li>  解决了<code>原型链继承</code>中，子类实例共享父类引用属性的问题</li>
+<li>  在创建子类实例时，可以向父类传参</li>
+</ul>
+</li>
+</ul>
+<!---->
+
+<ul>
+<li>  缺点</li>
+</ul>
+<!---->
+
+<ul>
+<li><ul>
+<li>  实例并不是父类的实例，只是子类的实例</li>
+<li>  只能继承父类构造函数中的属性和方法，不能继承父类原型链中的属性和方法</li>
+<li>  无法实现函数的复用，每个子类都有父类实例函数的副本，影响性能</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function Cat(name) &#123;</span><br><span class="line">  Person.call(this, name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var cat = new Cat(&#x27;Tom&#x27;);</span><br><span class="line"></span><br><span class="line">cat.sayName1();</span><br></pre></td></tr></table></figure>
+
+<h3 id="实例继承"><a href="#实例继承" class="headerlink" title="实例继承"></a>实例继承</h3><ul>
+<li>  缺点</li>
+</ul>
+<!---->
+
+<ul>
+<li><ul>
+<li>  无法实现多继承</li>
+<li>  子类实例化出来的对象是父类类型，不是子类类型</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 实例继承</span><br><span class="line">function Cat(name) &#123;</span><br><span class="line">  var instance = new Person(name);</span><br><span class="line">  return instance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var cat = new Cat(&#x27;Tom&#x27;);</span><br><span class="line"></span><br><span class="line">cat.sayName1()</span><br></pre></td></tr></table></figure>
+
+<h3 id="组合继承"><a href="#组合继承" class="headerlink" title="组合继承"></a>组合继承</h3><ul>
+<li>  优点</li>
+</ul>
+<!---->
+
+<ul>
+<li><ul>
+<li>  弥补了<code>构造继承</code>的缺陷，可以继承实例的属性/方法，也可以继承原型上的属性/方法</li>
+<li>  既是子类的实例，也是父类的实例</li>
+<li>  可以向父类传参</li>
+<li>  函数可以复用</li>
+</ul>
+</li>
+</ul>
+<!---->
+
+<ul>
+<li>  缺点</li>
+</ul>
+<!---->
+
+<ul>
+<li><ul>
+<li>  调用了两次父类的构造函数，生成了两份实例</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function Cat(name, age) &#123;</span><br><span class="line">  Person.call(this, name);</span><br><span class="line">  this.age = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Cat.prototype = new Person();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var cat = new Cat(&#x27;Tom&#x27;, 18);</span><br><span class="line"></span><br><span class="line">console.log(cat.name);</span><br><span class="line"></span><br><span class="line">cat.sayName1();</span><br><span class="line">cat.sayName2();</span><br><span class="line"></span><br><span class="line">console.log(cat.age);</span><br></pre></td></tr></table></figure>
+
+<h3 id="寄生组合继承"><a href="#寄生组合继承" class="headerlink" title="寄生组合继承"></a>寄生组合继承</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function Cat(name) &#123;</span><br><span class="line">  Person.call(this, name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var Temp = Object.create(Person.prototype); // 创建对象，创建父类原型的一个副本</span><br><span class="line">Temp.constructor = Cat;  // 增强对象，弥补因重写原型而失去的默认的constructor 属性</span><br><span class="line">Cat.prototype = Temp; // 指定对象，将新创建的对象赋值给子类的原型</span><br><span class="line"></span><br><span class="line">var cat = new Cat(&#x27;Tom&#x27;);</span><br><span class="line"></span><br><span class="line">cat.sayName1()</span><br></pre></td></tr></table></figure>
+
+<h2 id="new的时候都做了什么？"><a href="#new的时候都做了什么？" class="headerlink" title="new的时候都做了什么？"></a>new的时候都做了什么？</h2><ul>
+<li>  创建一个新对象</li>
+<li>  把这个新对象的<code>__proto__</code>属性指向你要new 的那个对象的<code>prototype</code></li>
+<li>  让构造函数里面的<code>this</code>指向新的对象，然后执行构造函数</li>
+<li>  返回这个新对象</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function _new(constructor, ...args) &#123;</span><br><span class="line">    const obj = Object.create(constructor.prototype);</span><br><span class="line">    const result = constructor.call(obj, ...args);</span><br><span class="line"></span><br><span class="line">    return result instanceof Object ? result : obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="ES6-Class"><a href="#ES6-Class" class="headerlink" title="ES6 Class"></a>ES6 Class</h2><p>ES6提供了更接近传统的写法，基本上可以看作只是一个语法糖，它的绝大部分功能，ES5都可以做到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">    constructor(name) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    sayName() &#123;</span><br><span class="line">        console.log(this.name + &#x27;在学习&#x27;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const p = new Person(&#x27;jiacheng&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>构造函数上的<code>prototype</code>属性，在ES6类上面继续存在，事实上，类的所有方法都是定义在类的<code>prototype</code>属性上面的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  toString() &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  toValue() &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 等同于</span><br><span class="line">Point.prototype = &#123;</span><br><span class="line">  constructor() &#123;&#125;,</span><br><span class="line">  toString() &#123;&#125;,</span><br><span class="line">  toValue() &#123;&#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>因此，在类的实例上面调用方法，其实就是调用原型上的方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class B&#123;&#125;</span><br><span class="line"></span><br><span class="line">const b = new B();</span><br><span class="line"></span><br><span class="line">b.constructor === B.prototype.constructor // true</span><br></pre></td></tr></table></figure>
+
+<p>所以，使用<code>Object.assin()</code>方法可以很方便地一次向类添加多个方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  constructor()&#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Object.assign(Point.prototype, &#123;</span><br><span class="line">  toString()&#123;&#125;,</span><br><span class="line">  toValue()&#123;&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><code>prototype</code>对象的<code>constructor</code>属性，直接指向类本身，这与ES5的行为是一致的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Point.prototype.constructor === Point // true</span><br></pre></td></tr></table></figure>
+
+<p>另外，类内部所有定义的方法，都是不可枚举的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  constructor(x, y) &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  toString() &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Object.keys(Point.prototype)</span><br><span class="line">// []</span><br><span class="line">Object.getOwnPropertyNames(Point.prototype)</span><br><span class="line">// [&quot;constructor&quot;,&quot;toString&quot;]</span><br></pre></td></tr></table></figure>
+
+<h3 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor"></a>constructor</h3><p><code>constructor</code>方法是类的默认方法，通过<code>new</code>命令生成对象实例时，自动调用该方法，一个类即使没有显示定义<code>constructor</code>，也会被默认添加一个空的<code>constructor</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class Person&#123;&#125;</span><br><span class="line"></span><br><span class="line">// 相当于</span><br><span class="line">class Person &#123;</span><br><span class="line">    constructor()&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>constructor</code>默认返回实例对象，完全可以指定返回另一个对象</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">    constructor() &#123;</span><br><span class="line">        return Object.create(null)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">new Person instanceof Person // false</span><br></pre></td></tr></table></figure>
+
+<p>类必须使用<code>new</code>调用，否则会直接报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person()</span><br><span class="line">// TypeError: Class constructor Foo cannot be invoked without &#x27;new&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="类的实例"><a href="#类的实例" class="headerlink" title="类的实例"></a>类的实例</h3><p>直接通过<code>new</code>命令生成一个类的实例，与ES5不同的是，直接调用类会报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  // ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 报错</span><br><span class="line">var point = Point(2, 3);</span><br><span class="line"></span><br><span class="line">// 正确</span><br><span class="line">var point = new Point(2, 3);</span><br></pre></td></tr></table></figure>
+
+<p>与 ES5 一样，实例的属性除非显式定义在其本身（即定义在<code>this</code>对象上），否则都是定义在原型上（即定义在<code>class</code>上）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//定义类</span><br><span class="line">class Point &#123;</span><br><span class="line"></span><br><span class="line">  constructor(x, y) &#123;</span><br><span class="line">    this.x = x;</span><br><span class="line">    this.y = y;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  toString() &#123;</span><br><span class="line">    return &#x27;(&#x27; + this.x + &#x27;, &#x27; + this.y + &#x27;)&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var point = new Point(2, 3);</span><br><span class="line"></span><br><span class="line">point.toString() // (2, 3)</span><br><span class="line"></span><br><span class="line">point.hasOwnProperty(&#x27;x&#x27;) // true</span><br><span class="line">point.hasOwnProperty(&#x27;y&#x27;) // true</span><br><span class="line">point.hasOwnProperty(&#x27;toString&#x27;) // false</span><br><span class="line">point.__proto__.hasOwnProperty(&#x27;toString&#x27;) // true</span><br></pre></td></tr></table></figure>
+
+<p>类的所有实例共享一个原型对象</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var p1 = new Point(2,3);</span><br><span class="line">var p2 = new Point(3,2);</span><br><span class="line"></span><br><span class="line">//true</span><br><span class="line">p1.__proto__ === p2.__proto__</span><br></pre></td></tr></table></figure>
+
+<p>这也意味着，可以通过实例的<code>__proto__</code>属性为“类”添加方法。</p>
+<p><code>__proto__</code> 并不是语言本身的特性，这是各大厂商具体实现时添加的私有属性，虽然目前很多现代浏览器的 JS 引擎中都提供了这个私有属性，但依旧不建议在生产中使用该属性，避免对环境产生依赖。生产环境中，我们可以使用 <code>Object.getPrototypeOf</code> 方法来获取实例对象的原型，然后再来为原型添加方法/属性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var p1 = new Point(2,3);</span><br><span class="line">var p2 = new Point(3,2);</span><br><span class="line"></span><br><span class="line">p1.__proto__.printName = function () &#123; return &#x27;Oops&#x27; &#125;;</span><br><span class="line"></span><br><span class="line">p1.printName() // &quot;Oops&quot;</span><br><span class="line">p2.printName() // &quot;Oops&quot;</span><br><span class="line"></span><br><span class="line">var p3 = new Point(4,2);</span><br><span class="line">p3.printName() // &quot;Oops&quot;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码在<code>p1</code>的原型上添加了一个<code>printName()</code>方法，由于<code>p1</code>的原型就是<code>p2</code>的原型，因此<code>p2</code>也可以调用这个方法。而且，此后新建的实例<code>p3</code>也可以调用这个方法。这意味着，使用实例的<code>__proto__</code>属性改写原型，必须相当谨慎，不推荐使用，因为这会改变“类”的原始定义，影响到所有实例。</p>
+<h3 id="getter和setter"><a href="#getter和setter" class="headerlink" title="getter和setter"></a>getter和setter</h3><p>与 ES5 一样，在“类”的内部可以使用<code>get</code>和<code>set</code>关键字，对某个属性设置存值函数和取值函数，拦截该属性的存取行为。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class MyClass &#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line">  get prop() &#123;</span><br><span class="line">    return &#x27;getter&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">  set prop(value) &#123;</span><br><span class="line">    console.log(&#x27;setter: &#x27;+value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let inst = new MyClass();</span><br><span class="line"></span><br><span class="line">inst.prop = 123;</span><br><span class="line">// setter: 123</span><br><span class="line"></span><br><span class="line">inst.prop</span><br><span class="line">// &#x27;getter&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>存值函数和取值函数是设置在属性的 Descriptor 对象上的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class CustomHTMLElement &#123;</span><br><span class="line">  constructor(element) &#123;</span><br><span class="line">    this.element = element;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  get html() &#123;</span><br><span class="line">    return this.element.innerHTML;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  set html(value) &#123;</span><br><span class="line">    this.element.innerHTML = value;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var descriptor = Object.getOwnPropertyDescriptor(</span><br><span class="line">  CustomHTMLElement.prototype, &quot;html&quot;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">&quot;get&quot; in descriptor  // true</span><br><span class="line">&quot;set&quot; in descriptor  // true</span><br></pre></td></tr></table></figure>
+
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ul>
+<li>严格模式<br>  类和模块的内部，默认就是严格模式，不需要使用’use strict’指定运行模式</li>
+<li>不存在提升<br>  类不存在变量提升</li>
+<li>Generator方法<br>  如果某个方法前加上<code>*</code>，就表示该方法是一个<code>Generator</code>函数</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Foo &#123;</span><br><span class="line">  constructor(...args) &#123;</span><br><span class="line">    this.args = args;</span><br><span class="line">  &#125;</span><br><span class="line">  * [Symbol.iterator]() &#123;</span><br><span class="line">    for (let arg of this.args) &#123;</span><br><span class="line">      yield arg;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for (let x of new Foo(&#x27;hello&#x27;, &#x27;world&#x27;)) &#123;</span><br><span class="line">  console.log(x);</span><br><span class="line">&#125;</span><br><span class="line">// hello</span><br><span class="line">// world</span><br></pre></td></tr></table></figure>
+
+
+<p>上面代码中，<code>Foo</code>类的<code>Symbol.iterator</code>方法前有一个星号，表示该方法是一个 Generator 函数。<code>Symbol.iterator</code>方法返回一个<code>Foo</code>类的默认遍历器，<code>for...of</code>循环会自动调用这个遍历器。</p>
+<ul>
+<li>this的指向<br>  类方法内部如果含有<code>this</code>，它默认指向类的实例，但该方法无法单独使用</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Logger &#123;</span><br><span class="line">  printName(name = &#x27;there&#x27;) &#123;</span><br><span class="line">    this.print(`Hello $&#123;name&#125;`);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  print(text) &#123;</span><br><span class="line">    console.log(text);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const logger = new Logger();</span><br><span class="line">const &#123; printName &#125; = logger;</span><br><span class="line">printName(); // TypeError: Cannot read property &#x27;print&#x27; of undefined</span><br></pre></td></tr></table></figure>
+
+
+<p>上面代码中，因为<code>printName</code>方法中的<code>this</code>，默认指向<code>Logger</code>类的实例，但如果将这个方法单独提取出来使用，<code>this</code>会指向该方法运行时所在的环境，而由于<code>class</code>内部是严格模式，所以这时候<code>this</code>直接指向<code>undefined</code>，导致报错<br>解决方法：</p>
+<ul>
+<li><ul>
+<li>  在构造方法中绑定<code>this</code>，这样就不会找不到<code>print</code>方法了。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Logger &#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    this.printName = this.printName.bind(this);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  printName(name = &#x27;there&#x27;) &#123;</span><br><span class="line">    this.print(`Hello $&#123;name&#125;`);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  print(text) &#123;</span><br><span class="line">    console.log(text);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><ul>
+<li>使用箭头函数<pre><code>箭头函数内部的`this`总是指向定义时所在的对象。上面代码中，箭头函数位于构造函数内部，它的定义生效的时候，是在构造函数执行的时候。这时，箭头函数所在的运行环境，肯定是实例对象，所以`this`会总是指向实例对象
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">  printName = () =&gt; &#123;</span><br><span class="line">    this.print()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  print() &#123;</span><br><span class="line">    console.log(&#x27;111&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var p = new Person();</span><br><span class="line"></span><br><span class="line">var &#123; printName &#125; = p;</span><br><span class="line"></span><br><span class="line">printName()</span><br></pre></td></tr></table></figure>
+
+<h3 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h3><p>类相当于实例的原型，所有在类中定义的方法，都会被实例继承，如果在一个方法前面加上<code>static</code>关键字，就表示该方法不会被实例继承，而是通过类来调用，这被称为<code>静态方法</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Foo &#123;</span><br><span class="line">  static classMethod() &#123;</span><br><span class="line">    return &#x27;hello&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Foo.classMethod() // &#x27;hello&#x27;</span><br><span class="line"></span><br><span class="line">var foo = new Foo();</span><br><span class="line">foo.classMethod()</span><br><span class="line">// TypeError: foo.classMethod is not a function</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>  如果静态方法中包含this关键字，这个this指向的是类，而不是实例</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Foo &#123;</span><br><span class="line">  static bar() &#123;</span><br><span class="line">    this.baz();</span><br><span class="line">  &#125;</span><br><span class="line">  static baz() &#123;</span><br><span class="line">    console.log(&#x27;hello&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">  baz() &#123;</span><br><span class="line">    console.log(&#x27;world&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Foo.bar() // hello</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>  父类的静态方法，可以被子类继承</li>
+<li>  静态方法也可以从<code>super</code>对象上调用</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Foo &#123;</span><br><span class="line">  static classMethod() &#123;</span><br><span class="line">    return &#x27;hello&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Bar extends Foo &#123;</span><br><span class="line">  static classMethod() &#123;</span><br><span class="line">    return super.classMethod() + &#x27;, too&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Bar.classMethod() // &quot;hello, too&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="静态属性"><a href="#静态属性" class="headerlink" title="静态属性"></a>静态属性</h3><p>静态属性是指class本身的属性，而不是定义在实例对象上的属性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Foo &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Foo.prop = 1;</span><br><span class="line"></span><br><span class="line">// 或者</span><br><span class="line">class Foo&#123;</span><br><span class="line">    static name = &#x27;jiacheng&#x27;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Foo.name; // jiacheng</span><br></pre></td></tr></table></figure>
+
+<h2 id="继承-1"><a href="#继承-1" class="headerlink" title="继承"></a>继承</h2><p>class通过<code>extends</code>关键字来实现继承</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Person&#123;&#125;</span><br><span class="line"></span><br><span class="line">class ColorPoint extends Person &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>super<br>  super关键字表示父类的构造函数，用来新建父类的<code>this</code>对象<br>  子类必须在<code>constructor</code>中调用<code>super</code>方法，否则会报错</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class ColorPoint extends Point &#123;</span><br><span class="line">  constructor(x, y, color) &#123;</span><br><span class="line">    super(x, y); // 调用父类的constructor(x, y)</span><br><span class="line">    this.color = color;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  toString() &#123;</span><br><span class="line">    return this.color + &#x27; &#x27; + super.toString(); // 调用父类的toString()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="ES6继承和ES5继承的区别"><a href="#ES6继承和ES5继承的区别" class="headerlink" title="ES6继承和ES5继承的区别"></a>ES6继承和ES5继承的区别</h2><ul>
+<li>  ES5里的构造函数是一个普通函数，可以使用new调用，也可以直接调用，且存在变量提升。ES6的class必须使用new操作符调用，且不存在变量提升</li>
+<li>  ES5子类的原型是指向<code>Function.prototype</code>，而ES6子类的原型是指向父类的</li>
+<li>  ES5的原型方法和静态方法是可枚举的，而class的默认不可枚举，但可以使用<code>Object.getOwnPropertyNames</code>方法获取</li>
+<li>  ES5的继承，实质是先创造一个子类实例对象的<code>this</code>，然后再执行父类构造函数给它添加实例方法和属性(不执行也无所谓)；ES6的继承机制则相反，先将父类的属性和方法，加到一个空对象上，然后再将该对象作为子类的实例，即”继承在前，实例在后”</li>
+</ul>
+</div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/JavaScript/">JavaScript</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/%E5%89%8D%E7%AB%AF%E7%BB%84%E4%BB%B6%E5%8C%96%E6%80%9D%E8%80%83/"><span class="level-item">前端组件化思考</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "3887d8e0e9559ac3c82348f46beb809e",
+            repo: "hjc0930.github.io",
+            owner: "hjc0930",
+            clientID: "71e6b24166456f7acaed",
+            clientSecret: "be2c12c0d0d3fb58dc9d2fced639c667268ec3f7",
+            admin: ["hjc0930"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/logo.png" alt="hjc"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">hjc</p><p class="is-size-6 is-block">一个前端程序员的 编程笔记和生活记录</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">95</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">13</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">12</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/hjc0930" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/hjc0930"><i class="fab fa-github"></i></a></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/CSS/"><span class="level-start"><span class="level-item">CSS</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Git/"><span class="level-start"><span class="level-item">Git</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/React/"><span class="level-start"><span class="level-item">React</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/nodejs/"><span class="level-start"><span class="level-item">nodejs</span></span><span class="level-end"><span class="level-item tag">19</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/"><span class="level-start"><span class="level-item">前端</span></span><span class="level-end"><span class="level-item tag">72</span></span></a><ul><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/CSS/"><span class="level-start"><span class="level-item">CSS</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/HTML/"><span class="level-start"><span class="level-item">HTML</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/"><span class="level-start"><span class="level-item">JavaScript</span></span><span class="level-end"><span class="level-item tag">30</span></span></a><ul><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/DOM/"><span class="level-start"><span class="level-item">DOM</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/React/"><span class="level-start"><span class="level-item">React</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="level-start"><span class="level-item">前端工程化</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/"><span class="level-start"><span class="level-item">框架</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%89%8D%E7%AB%AF/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><span class="level-start"><span class="level-item">设计模式</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-18T12:27:27.946Z">2023-04-18</time></p><p class="title"><a href="/JavaScript%E4%B8%AD%E5%8D%95%E7%BB%A7%E6%89%BF/">JavaScript中单继承</a></p><p class="categories"><a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-17T14:26:53.699Z">2023-04-17</time></p><p class="title"><a href="/%E5%89%8D%E7%AB%AF%E7%BB%84%E4%BB%B6%E5%8C%96%E6%80%9D%E8%80%83/">前端组件化思考</a></p><p class="categories"><a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a> / <a href="/categories/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/">框架</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-16T15:22:33.811Z">2023-04-16</time></p><p class="title"><a href="/React/React%20State/">React State</a></p><p class="categories"><a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a> / <a href="/categories/%E5%89%8D%E7%AB%AF/React/">React</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-12T14:55:15.580Z">2023-04-12</time></p><p class="title"><a href="/%E9%9D%A2%E8%AF%95%E5%B0%8F%E7%BB%93(20230410)%20/">面试小结（20230410）</a></p><p class="categories"><a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-07T07:15:36.785Z">2023-04-07</time></p><p class="title"><a href="/%E9%9D%A2%E8%AF%95%E5%B0%8F%E7%BB%93(20230407)/">面试小结（20230407）</a></p><p class="categories"><a href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">95</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/CSS/"><span class="tag">CSS</span><span class="tag">12</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Chrome%E8%B0%83%E8%AF%95/"><span class="tag">Chrome调试</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Git/"><span class="tag">Git</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/HTML/"><span class="tag">HTML</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/JavaScript/"><span class="tag">JavaScript</span><span class="tag">37</span></a></div><div class="control"><a class="tags has-addons" href="/tags/React/"><span class="tag">React</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/nodejs/"><span class="tag">nodejs</span><span class="tag">19</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%89%8D%E7%AB%AF/"><span class="tag">前端</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/"><span class="tag">前端工程化</span><span class="tag">7</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/"><span class="tag">浏览器</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><span class="tag">设计模式</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%9D%A2%E8%AF%95/"><span class="tag">面试</span><span class="tag">3</span></a></div></div></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li><li><a class="level is-mobile" href="https://juejin.cn/user/87601131292839/posts" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">JueJin</span></span><span class="level-right"><span class="level-item tag">juejin.cn</span></span></a></li></ul></div></div></div><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#ES5-继承"><span class="level-left"><span class="level-item">1</span><span class="level-item">ES5 继承</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#继承"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">继承</span></span></a></li><li><a class="level is-mobile" href="#构造继承"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">构造继承</span></span></a></li><li><a class="level is-mobile" href="#实例继承"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">实例继承</span></span></a></li><li><a class="level is-mobile" href="#组合继承"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">组合继承</span></span></a></li><li><a class="level is-mobile" href="#寄生组合继承"><span class="level-left"><span class="level-item">1.5</span><span class="level-item">寄生组合继承</span></span></a></li></ul></li><li><a class="level is-mobile" href="#new的时候都做了什么？"><span class="level-left"><span class="level-item">2</span><span class="level-item">new的时候都做了什么？</span></span></a></li><li><a class="level is-mobile" href="#ES6-Class"><span class="level-left"><span class="level-item">3</span><span class="level-item">ES6 Class</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#constructor-NaN"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">constructor</span></span></a></li><li><a class="level is-mobile" href="#类的实例"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">类的实例</span></span></a></li><li><a class="level is-mobile" href="#getter和setter"><span class="level-left"><span class="level-item">3.3</span><span class="level-item">getter和setter</span></span></a></li><li><a class="level is-mobile" href="#注意点"><span class="level-left"><span class="level-item">3.4</span><span class="level-item">注意点</span></span></a></li><li><a class="level is-mobile" href="#静态方法"><span class="level-left"><span class="level-item">3.5</span><span class="level-item">静态方法</span></span></a></li><li><a class="level is-mobile" href="#静态属性"><span class="level-left"><span class="level-item">3.6</span><span class="level-item">静态属性</span></span></a></li></ul></li><li><a class="level is-mobile" href="#继承-1"><span class="level-left"><span class="level-item">4</span><span class="level-item">继承</span></span></a></li><li><a class="level is-mobile" href="#ES6继承和ES5继承的区别"><span class="level-left"><span class="level-item">5</span><span class="level-item">ES6继承和ES5继承的区别</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="https://hjc0930.oss-cn-hangzhou.aliyuncs.com/logo.png" alt="博客" height="28"></a><p class="is-size-7"><span>&copy; 2023 hjc</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/hjc0930"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
